@@ -54,24 +54,29 @@ baseIcon.iconAnchor = new GPoint(9, 34);
 baseIcon.infoWindowAnchor = new GPoint(9, 2);
 baseIcon.infoShadowAnchor = new GPoint(18, 25);
 
+// 清除页面中的缓存（房屋信息和标注信息）
 function clearCache() {
 	houseCache = new Array();
 	markerCache = new Array();
 }
 
+// 翻页
 function gotoPage(toPage) {
 	pageNo = toPage;
 	fetchMarkers();
 }
 
+// 下一页
 function gotoNextPage() {
 	gotoPage(pageNo + 1);
 }
 
+// 上一页
 function gotoPrievPage() {
 	gotoPage(pageNo - 1);
 }
 
+// 清除查询条件
 function clearConditions() {
 	var sf = $('searchForm');
 	sf.priceFrom.value = '';
@@ -82,6 +87,7 @@ function clearConditions() {
 	fetchMarkers();
 }
 
+// 显示翻页条
 function displayPageNav(pageObj) {
 	pageNo = pageObj.currPageNumber;
 	pageSize = pageSize;
@@ -157,6 +163,7 @@ function displayPageNav(pageObj) {
 	$("pageNav").innerHTML = content + "<hr size='1'/>";
 }
 
+// 从服务器获取相关房屋信息
 function fetchMarkers() {
 	var bounds = mymap.map.getBounds();
 	var ne = bounds.getNorthEast();
@@ -221,6 +228,7 @@ function fetchMarkers() {
 
 }
 
+// 自定义的地图类
 function MyMap(lng, lat, zoom) {
 	this.map = new GMap2(document.getElementById("map"));
 	this.map.addControl(new GLargeMapControl ());
