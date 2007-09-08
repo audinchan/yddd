@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		">
+
+	<!-- 定义一系列要使用的安全过滤器 -->
+	<bean id="filterChainProxy"
+		class="org.acegisecurity.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**=httpSessionContextIntegrationFilter,rememberMeProcessingFilter,logoutFilter,formAuthenticationProcessingFilter,exceptionTranslationFilter,filterSecurityInterceptor
+			</value>
+			<!--  -->
+		</property>
+	</bean>
+
+	<bean id="exceptionTranslationFilter"
+		class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint"
+			ref="formLoginAuthenticationEntryPoint" />
+	</bean>
+
+	<!-- Define filter to handle FORM authentication -->
+	<bean id="formAuthenticationProcessingFilter"
+		class="com.yodoo.rent.webapp.utils.UserAuthenticationProcessingFilter">
+		<property name="filterProcessesUrl">
+			<value>/j_acegi_security_check</value>
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>/login.jsp?error=1</value>
+		</property>
+		<property name="defaultTargetUrl">
+			<value>/</value>
+		</property>
+		<property name="authenticationManager"
+			ref="authenticationManager" />
+		<property name="rememberMeServices" ref="rememberMeServices" />
+		<property name="exceptionMappings">
+			<value>
+				org.acegisecurity.BadCredentialsException=/login.jsp?errcode=1
+				org.acegisecurity.DisabledException=/login.jsp?errcode=2
+				org.acegisecurity.LockedException=/login.jsp?errcode=3
+				org.acegisecurity.concurrent.ConcurrentLoginException=/login.jsp?errcode=4
+				org.acegisecurity.AuthenticationServiceException=/login.jsp?errcode=5
+				org.acegisecurity.AuthenticationException=/login.jsp?errcode=0
+			</value>
+		</property>
+		<property name="userManager"
+			ref="userManager" />
+	</bean>
+
+	<!-- Define realm for FORM login-->
+	<bean id="formLoginAuthenticationEntryPoint"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="loginFormUrl">
+			<value>/login.jsp</value>
+		</property>
+		<property name="forceHttps">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean id="httpSessionContextIntegrationFilter"
+		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+		<property name="context">
+			<value>
+				org.acegisecurity.captcha.CaptchaSecurityContextImpl
+			</value>
+		</property>
+	</bean>
+
+	<bean id="rememberMeProcessingFilter"
+		class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+		<property name="authenticationManager"
+			ref="authenticationManager" />
+		<property name="rememberMeServices" ref="rememberMeServices" />
+	</bean>
+
+	<bean id="rememberMeServices"
+		class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService"
+			ref="userDetailsServiceDemo" />
+		<property name="key" value="springRocks" />
+		<property name="parameter" value="rememberme" />
+	</bean>
+
+	<bean id="rememberMeAuthenticationProvider"
+		class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+		<property name="key" value="springRocks" />
+	</bean>
+
+	<bean id="logoutFilter"
+		class="org.acegisecurity.ui.logout.LogoutFilter">
+		<!-- 退出后指向的 URL -->
+		<constructor-arg value="/login.jsp?logout=true" />
+		<constructor-arg>
+			<list>
+				<ref bean="rememberMeServices" />
+				<bean
+					class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+				<!-- 解决退出后再登录出现ClassCastException异常 -->
+				<bean
+					class="com.yodoo.rent.webapp.utils.SessionlogoutHandlerImpl" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- Start Security interceptor config -->
+	<!-- Define authentication manager, decision manager and secure URL patterns -->
+	<bean id="filterSecurityInterceptor"
+		class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager"
+			ref="authenticationManager" />
+		<property name="accessDecisionManager"
+			ref="accessDecisionManager" />
+		<property name="objectDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				\A/house/.*\Z=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
+				\A/admin/.*\Z=ROLE_ADMIN,ROLE_NORMALADMIN
+			</value>
+		</property>
+	</bean>
+	<!-- End Security interceptor config -->
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref bean="daoAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider"
+		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService"
+			ref="userDetailsServiceJdbc" />
+		<property name="passwordEncoder" ref="systemPasswordEncoder" />
+	</bean>
+	
+	<alias alias="systemPasswordEncoder" name="md5PasswordEncoder"/>
+
+	<!-- MD5加密方式 -->
+	<bean id="md5PasswordEncoder"
+		class="org.acegisecurity.providers.encoding.Md5PasswordEncoder">
+	</bean>
+
+	<bean id="plaintextPasswordEncoder"
+		class="org.acegisecurity.providers.encoding.PlaintextPasswordEncoder">
+	</bean>
+
+	<bean id="userDetailsServiceDemo"
+		class="org.acegisecurity.userdetails.memory.InMemoryDaoImpl">
+		<property name="userMap">
+			<value>admin=admin,ROLE_ADMIN user=user,ROLE_USER</value>
+		</property>
+	</bean>
+
+	<bean id="userDetailsServiceJdbc"
+		class="org.acegisecurity.userdetails.jdbc.JdbcDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+		<property name="usersByUsernameQuery">
+			<value>
+				SELECT username,password,enabled FROM user WHERE
+				username = ?
+			</value>
+		</property>
+		<property name="authoritiesByUsernameQuery">
+			<value>
+				select u.username,r.role from user u, role r, user_role ur
+				where u.username=ur.username and ur.role=r.role and u.username=?
+			</value>
+		</property>
+		<property name="rolePrefix">
+			<value>ROLE_</value>
+		</property>
+	</bean>
+
+	<bean id="accessDecisionManager"
+		class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter">
+		<property name="rolePrefix">
+			<value>ROLE_</value>
+		</property>
+	</bean>
+
+	<!-- 设置DWR bean的权限 -->
+	<!--  
+	<bean id="autoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<value>securityInterceptor</value>
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>desUtil</value>
+				<value>deptUtil</value>
+				<value>reportUtil</value>
+				<value>archUtil</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="securityInterceptor"
+		class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="accessDecisionManager">
+			<ref bean="accessDecisionManager" />
+		</property>
+		<property name="objectDefinitionSource">
+			<value>
+				com.pkg.webapp.ajax.DesUtil.*=ROLE_906_9060
+			</value>
+		</property>
+	</bean>
+	-->
+</beans>

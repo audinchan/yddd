@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-8-11 22:18:43 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.User" table="user" catalog="rent">
+        <comment></comment>
+        <id name="username" type="string">
+            <column name="username" length="64" />
+            <generator class="assigned" />
+        </id>
+        <version name="version" type="integer">
+            <column name="version" not-null="true">
+                <comment></comment>
+            </column>
+        </version>
+        <property name="password" type="string">
+            <column name="password" length="32" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="displayName" type="string">
+            <column name="display_name" length="64">
+                <comment></comment>
+            </column>
+        </property>
+        <set name="houseInfos" inverse="true">
+            <key>
+                <column name="username" length="64" not-null="true">
+                    <comment></comment>
+                </column>
+            </key>
+            <one-to-many class="com.yodoo.rent.model.HouseInfo" />
+        </set>
+        <set name="userProfiles" inverse="true">
+            <key>
+                <column name="username" length="64" not-null="true">
+                    <comment></comment>
+                </column>
+            </key>
+            <one-to-many class="com.yodoo.rent.model.UserProfile" />
+        </set>
+        <set name="roles" inverse="false" table="user_role" cascade="save-update">
+            <key>
+                <column name="username" length="64" not-null="true">
+                    <comment></comment>
+                </column>
+            </key>
+            <many-to-many entity-name="com.yodoo.rent.model.Role">
+                <column name="role" length="64" not-null="true">
+                    <comment></comment>
+                </column>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

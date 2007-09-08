@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+.error {
+	font-weight: bold;
+	color: red;
+	border: 1px;
+	border-color: blue;
+	background: yellow;
+}
+
+#paneltoggle {left: 20em;}
+
+#header {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #FF6600;
+}
+
+#map {
+	border-width: 1px;
+	border-style: solid;
+	border-color: gray;
+}

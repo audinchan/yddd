@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+    <div id="houseInfo">
+    <strong>请输入出租房屋的信息</strong><br/><br/>
+    	地址:<input type="text" name="address" id="address" /><br/>
+    	居室:<select name="rooms" id="rooms">
+    		<option value="1">1</option>
+    		<option value="2">2</option>
+    		<option value="3">3</option>
+    		<option value="4">4</option>
+    		<option value="5">5</option>
+    		<option value="0">更多</option>
+    	</select>
+    	居<br/>
+    	租金:<input type="text" name="price" id="price" />元/月<br />
+		<br/>
+    	联系人:<input type="text" name="provider" id="provider" /><br/>
+    	电话:<input type="text" name="phone" id="phone" /><br/>
+    	Email:<input type="text" name="email" id="email" /><br />
+    	<input type="button" value="发布" onclick="submitInfo()"/>
+    </div>
+    
+<strong>信息发布成功！</strong><br/>
+需要添加照片或视频吗？<br/>
+<input type="button" value="添加照片" /> 
+<input type="button" value="添加视频" />
+
+</body>
+</html>
