@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	
+	<!-- query provider wrapper -->
+	<bean id="queryProvider" class="org.nestframework.commons.hibernate.QueryProviderWrap" autowire="byName">
+		<property name="queryProvider" ref="queryProviderMapping"></property>
+	</bean>
+	
+	<!-- query provider mapping implement -->
+	<bean id="queryProviderMapping" class="org.nestframework.commons.hibernate.QueryProviderMappingImpl">
+		<property name="queryMap">
+			<map>
+				<!-- query example -->
+				<entry key="user.findUsers.query"><value><![CDATA[
+					from User u where 1=1
+					<#if username?has_content>
+						and u.username like %:username%
+					</#if>
+					<#if orderBy?has_content>
+						order by u.${orderBy}
+					<#else>
+						order by u.username
+					</#if>
+				]]></value></entry>
+				<entry key="user.findUsers.count"><value><![CDATA[
+					select count(*) from User u where 1=1
+					<#if username?has_content>
+						and u.username like %:username%
+					</#if>
+				]]></value></entry>
+				
+				<!-- houseInfo.findHouses -->
+				<entry key="houseInfo.findHouses.qry"><value><![CDATA[
+					from HouseInfo where 1=1
+					<#if minLng?has_content>
+						and longitude >= :minLng[float]
+					</#if>
+					<#if maxLng?has_content>
+						and longitude <= :maxLng[float]
+					</#if>
+					<#if minLat?has_content>
+						and latitude >= :minLat[float]
+					</#if>
+					<#if maxLat?has_content>
+						and latitude <= :maxLat[float]
+					</#if>
+					<#if onlyNew = "true">
+						and (
+							longitude < :oldMinLng[float]
+							or and longitude > :oldMaxLng[float]
+							or latitude < :oldMinLat[float]
+							or latitude > :oldMaxLat[float]
+						)
+					</#if>
+					<#if priceFrom?has_content>
+						and price >= :priceFrom[int]
+					</#if>
+					<#if priceTo?has_content>
+						and price <= :priceTo[int]
+					</#if>
+					<#if rooms?has_content>
+						and rooms = :rooms[int]
+					</#if>
+					<#if keyword?has_content>
+						and (
+							addressDetail like %:keyword%
+						)
+					</#if>
+					<#if orderBy?has_content>
+						order by ${orderBy}
+					<#else>
+						order by publishTime desc
+					</#if>
+				]]></value></entry>
+				<entry key="houseInfo.findHouses.count"><value><![CDATA[
+					select count(*) from HouseInfo where 1=1
+					<#if minLng?has_content>
+						and longitude >= :minLng[float]
+					</#if>
+					<#if maxLng?has_content>
+						and longitude <= :maxLng[float]
+					</#if>
+					<#if minLat?has_content>
+						and latitude >= :minLat[float]
+					</#if>
+					<#if maxLat?has_content>
+						and latitude <= :maxLat[float]
+					</#if>
+					<#if onlyNew = "true">
+						and (
+							longitude < :oldMinLng[float]
+							or and longitude > :oldMaxLng[float]
+							or latitude < :oldMinLat[float]
+							or latitude > :oldMaxLat[float]
+						)
+					</#if>
+					<#if priceFrom?has_content>
+						and price >= :priceFrom[int]
+					</#if>
+					<#if priceTo?has_content>
+						and price <= :priceTo[int]
+					</#if>
+					<#if rooms?has_content>
+						and rooms = :rooms[int]
+					</#if>
+					<#if keyword?has_content>
+						and (
+							addressDetail like %:keyword%
+						)
+					</#if>
+				]]></value></entry>
+				
+				<!-- houseInfo.findUserHouses -->
+				<entry key="houseInfo.findUserHouses.qry"><value><![CDATA[
+					from HouseInfo where 1=1
+					<#if username?has_content>
+						and user.username = :username
+					</#if>
+					<#if keyword?has_content>
+						and (
+							addressDetail like %:keyword%
+						)
+					</#if>
+					<#if orderBy?has_content>
+						order by ${orderBy}
+					<#else>
+						order by publishTime desc
+					</#if>
+				]]></value></entry>
+				<entry key="houseInfo.findUserHouses.count"><value><![CDATA[
+					select count(*) from HouseInfo where 1=1
+					<#if username?has_content>
+						and user.username = :username
+					</#if>
+					<#if keyword?has_content>
+						and (
+							addressDetail like %:keyword%
+						)
+					</#if>
+				]]></value></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- hql can also be stored in database(or anywhere, just implement IQueryProvider interface) -->
+	<!-- Sample DDL for query storage table:
+		CREATE TABLE  `query` (
+		  `name` varchar(64) NOT NULL default '',
+		  `hql` text NOT NULL,
+		  PRIMARY KEY  (`name`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='dynamic hqls';
+	 -->
+	<bean id="queryProviderJdbc" class="org.nestframework.commons.hibernate.QueryProviderJdbcImpl" autowire="byName">
+		<property name="sql" value="select hql from query where name = ?"/>
+	</bean>
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-8-8 15:49:43 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.LocationCache" table="location_cache" catalog="rent">
+        <comment></comment>
+        <id name="address" type="string">
+            <column name="address" length="80" />
+            <generator class="assigned" />
+        </id>
+        <property name="formatAddress" type="string">
+            <column name="format_address" length="80">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="longitude" type="java.lang.Float">
+            <column name="longitude" precision="12" scale="0">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="latitude" type="java.lang.Float">
+            <column name="latitude" precision="12" scale="0">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="zoom" type="integer">
+            <column name="zoom">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="updateTime" type="timestamp">
+            <column name="update_time" length="19">
+                <comment></comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>
