@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-8-11 20:40:23 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.UserProfile" table="user_profile" catalog="rent">
+        <comment></comment>
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="uuid.hex"></generator>
+        </id>
+        <many-to-one name="user" class="com.yodoo.rent.model.User" fetch="select">
+            <column name="username" length="64" not-null="true">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        <property name="fullName" type="string">
+            <column name="full_name" length="32">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="phoneNo" type="string">
+            <column name="phone_no" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="cellPhone" type="string">
+            <column name="cell_phone" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="longitude" type="java.lang.Double">
+            <column name="longitude" precision="22" scale="0">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="latitude" type="java.lang.Double">
+            <column name="latitude" precision="22" scale="0">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="actived" type="boolean">
+            <column name="actived" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

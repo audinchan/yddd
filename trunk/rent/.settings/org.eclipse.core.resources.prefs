@@ -1,0 +1,9 @@
+#Fri Aug 10 17:11:20 CST 2007
+eclipse.preferences.version=1
+encoding//WebContent/js/func.js=UTF-8
+encoding//conf/db-conf.properties=UTF-8
+encoding//conf/i18n/messages_zh_CN.properties=GBK
+encoding//src/sys-conf.properties=UTF-8
+encoding//test/db-conf-test.properties=GBK
+encoding/build.properties=GBK
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
