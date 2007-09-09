@@ -134,7 +134,7 @@
         
         <!-- 定义逻辑删除 -->
         <sql-delete>
-        	update HouseInfo set deleted=1 where id=? and version=?
+        	update house_info set deleted=1 where id=? and version=?
         </sql-delete>
     </class>
 </hibernate-mapping>

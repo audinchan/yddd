@@ -153,26 +153,36 @@ public class RentUtil {
 			throw new PermissionDeniedException();
 		}
 		
-		if (StringUtil.isEmpty(h.getId())) {
-			throw new PermissionDeniedException();
+//		if (StringUtil.isEmpty(h.getId())) {
+//			throw new PermissionDeniedException();
+//		}
+		
+		HouseInfo hi = h;
+		
+		if (StringUtil.isNotEmpty(h.getId())) { // ÐÞ¸Ä
+			hi = houseInfoManager.get(h.getId());
+			
+			if (hi == null) {
+				throw new PermissionDeniedException();
+			}
+			
+			if (!hi.getUser().getUsername().equals(loginUser.getUsername())) {
+				throw new PermissionDeniedException();
+			}
+			
+			hi.setAddressDetail(h.getAddressDetail());
+			hi.setRooms(h.getRooms());
+			hi.setPrice(h.getPrice());
+			hi.setProvider(h.getProvider());
+			hi.setPhone(h.getPhone());
+			hi.setEmail(h.getEmail());
+		} else { // Ìí¼Ó
+			hi.setProvince(1);
+			hi.setCity(1);
+			hi.setArea(1);
+			hi.setRentType(1);
+			hi.setUser(userManager.get(loginUser.getUsername()));
 		}
-		
-		HouseInfo hi = houseInfoManager.get(h.getId());
-		
-		if (hi == null) {
-			throw new PermissionDeniedException();
-		}
-		
-		if (!hi.getUser().getUsername().equals(loginUser.getUsername())) {
-			throw new PermissionDeniedException();
-		}
-		
-		hi.setAddressDetail(h.getAddressDetail());
-		hi.setRooms(h.getRooms());
-		hi.setPrice(h.getPrice());
-		hi.setProvider(h.getProvider());
-		hi.setPhone(h.getPhone());
-		hi.setEmail(h.getEmail());
 		
 		hi.setPublishTime(new Date());
 
@@ -287,6 +297,9 @@ public class RentUtil {
 		}
 
 		User user = BaseAction.getLoginUser(s);
+		if (user == null) {
+			throw new PermissionDeniedException();
+		}
 		IPage<HouseInfo> page = houseInfoManager.findUserHouses(user.getUsername(), keyword, pageNo, pageSize);
 
 		if (log.isDebugEnabled()) {

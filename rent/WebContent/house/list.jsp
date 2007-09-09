@@ -29,10 +29,6 @@ dwr.engine.setErrorHandler(errh);
 
 var roomDesc = ["", "一居 ", "两居 ", "三居 ", "四居 ", "五居 ", "多居 "];
 var timeDiff = 0;
-var lngStr = "${param.lng}";
-var latStr = "${param.lat}";
-var lng = lngStr == "" ? 39.917 : parseFloat(lngStr);
-var lat = latStr == "" ? 116.397 : parseFloat(latStr);
 var houseCache = new Array();
 var markerCache = new Array();
 var lastClickId = "";
@@ -54,6 +50,23 @@ baseIcon.iconAnchor = new GPoint(9, 34);
 baseIcon.infoWindowAnchor = new GPoint(9, 2);
 baseIcon.infoShadowAnchor = new GPoint(18, 25);
 
+var mymap;
+var newMarker;
+var addInfo;
+var isMoved = false;
+
+
+var lng1 = '${param.lng}';
+var lat1 = '${param.lat}';
+var zoom1 = '${param.zoom}';
+var add = '${param.add}';
+
+var lng = lng1 == "" ? 116.397 : parseFloat(lng1);
+var lat = lat1 == "" ? 39.917 : parseFloat(lat1);
+var zoom = zoom1 == "" ? 14 : parseInt(zoom1);
+
+
+
 function tpl(id) {
 	var el = $(id);
 	if (el) {
@@ -65,29 +78,102 @@ function tpl(id) {
 	}
 }
 
+function tplClone(which, callback) {
+	var id = "_edit";
+
+	dwr.util.cloneNode(which, { idSuffix: id });
+	$(which + id).style.display = "";
+	
+	if (typeof callback == "function") {
+		callback();
+	}
+
+	return tpl(which + id);
+}
+
+function publishRent() {
+	isMoved = false;
+	$('btnPublish').disabled = true;
+	
+	newMarker = new GMarker(mymap.map.getCenter(), {
+		draggable: true/*,
+		icon: icon*/
+	});
+	GEvent.addListener(newMarker, "click", function() {
+		newMarker.openInfoWindowHtml(addInfo);
+	});
+	
+	GEvent.addListener(newMarker, "dragstart", function() {
+		mymap.map.closeInfoWindow();
+	});
+	
+	GEvent.addListener(newMarker, "dragend", function() {
+		if (!isMoved) {
+			isMoved = true;
+			addInfo = tplClone('tplEdit', function() {
+				dwr.util.setValue('editTitle_edit', '2.请输入出租房屋的信息');
+			});
+		}
+		newMarker.openInfoWindowHtml(addInfo);
+	});
+		  
+	mymap.map.addOverlay(newMarker);
+	
+	addInfo = tplClone('tplPublishHint');
+	newMarker.openInfoWindowHtml(addInfo);
+
+}
+
 function submitInfo() {
-    	rentUtil.saveHouseEdit(
-    		{
-    			id: $('houseid_edit').value,
-    			addressDetail: $('address_edit').value,
-    			rooms: $("rooms_edit").value,
-    			price: $("price_edit").value,
-    			provider: $("provider_edit").value,
-    			phone: $("phone_edit").value,
-    			email: $("email_edit").value, 
-    		},
-    		function(house) {
-    			var id = house.id;
-    			houseCache[id] = house;
-    			
-				dwr.util.setValue("idAddress" + id, house.addressDetail);
-				dwr.util.setValue("idRooms" + id, roomDesc[house.rooms]);
-				dwr.util.setValue("idPrice" + id, house.price);
-				dwr.util.setValue("idProvider" + id, house.provider);
-				dwr.util.setValue("idPhone" + id, house.phone);
-				dwr.util.setValue("idDate" + id, house.publishTime.friendlyFormat(timeDiff));
-    		}
-    	);
+	var houseId = $('houseid_edit').value;
+	var marker = markerCache[houseId];
+	if (!marker) {
+		marker = newMarker;
+	}
+	var p = marker.getPoint();
+	
+   	rentUtil.saveHouseEdit(
+   		{
+   			longitude: p.lng(),
+   			latitude: p.lat(),
+   			id: houseId,
+   			addressDetail: $('address_edit').value,
+   			rooms: $("rooms_edit").value,
+   			price: $("price_edit").value,
+   			provider: $("provider_edit").value,
+   			phone: $("phone_edit").value,
+   			email: $("email_edit").value, 
+   		},
+   		function(house) {
+   			var id = house.id;
+   			if (!houseCache[id]) {
+   				$('btnPublish').disabled = false;
+   				fetchMarkers();
+   				return;
+   				/*
+   				var index = 0;
+   				var icon = "<img border='0' onclick='this.blur()' src='http://www.google.com/intl/zh-CN_cn/mapfiles/icon"+String.fromCharCode("A".charCodeAt(0) + index)+".png' />";
+				dwr.util.cloneNode("pattern", { idSuffix:id });
+				dwr.util.setValue("idIcon" + id, icon, { escapeHtml:false });
+				$("pattern" + id).style.display = "";
+				
+				markerCache[id] = newMarker;
+				*/
+   			}
+   			houseCache[id] = house;
+   			
+			dwr.util.setValue("idAddress" + id, house.addressDetail);
+			dwr.util.setValue("idRooms" + id, roomDesc[house.rooms]);
+			dwr.util.setValue("idPrice" + id, house.price);
+			dwr.util.setValue("idProvider" + id, house.provider);
+			dwr.util.setValue("idPhone" + id, house.phone);
+			dwr.util.setValue("idDate" + id, house.publishTime.friendlyFormat(timeDiff));
+			
+			markerCache[id].openInfoWindowHtml('保存成功。<p/><input type="button" value="确定" onclick="mymap.map.closeInfoWindow()"/>');
+   		}
+   	);
+   	
+   	marker.openInfoWindowHtml("正在保存，请稍候……");
 }
 
 function deleteHouse(id) {
@@ -127,7 +213,7 @@ function displayPageNav(pageObj) {
 	
 	var info = "";
 	
-	dwr.util.setValue("findingHouse", "共找到" + pageObj.totalCount + "处出租信息.");
+	dwr.util.setValue("findingHouse", "您已发布" + pageObj.totalCount + "处出租信息.");
 	
 	var content = info;
 	
@@ -179,7 +265,7 @@ function fetchMarkers() {
 			mymap.addMarker(index, house);
 			
 			// 设置地图中心为第一个出租信息处
-			if (toSetCenter) {
+			if (add != '1' && toSetCenter) {
 				toSetCenter = false;
 				mymap.map.setCenter(new GLatLng(house.latitude, house.longitude), 14);
 			}
@@ -207,7 +293,7 @@ function MyMap(lng, lat, zoom) {
 	this.map.addControl(new GLargeMapControl ());
 	this.map.addControl(new GScaleControl());
 	this.map.addControl(new GOverviewMapControl());
-	this.map.setCenter(new GLatLng(lng, lat), zoom);
+	this.map.setCenter(new GLatLng(lat, lng), zoom);
 
 }
 
@@ -222,6 +308,10 @@ MyMap.prototype.addMarker = function(index, house) {
 		});
 	GEvent.addListener(marker, "click", function() {
 		openInfoOfHouse(house.id);
+	});
+	
+	GEvent.addListener(marker, "dragstart", function() {
+		mymap.map.closeInfoWindow();
 	});
 	
 	GEvent.addListener(marker, "dragend", function() {
@@ -252,7 +342,7 @@ function openInfoOfHouse(houseId) {
 	// we were an id of the form "idIcon{id}", eg "idIcon42". We lookup the "42"
 	var marker = markerCache[houseId];
 	var house = houseCache[houseId];
-	if (marker != undefined && house != undefined) {
+	if (marker) {
 	
 		var id = "_edit";
 	
@@ -261,21 +351,23 @@ function openInfoOfHouse(houseId) {
 	
 		marker.openInfoWindowHtml(tpl("tplEdit" + id));
 		
-		dwr.util.setValue("address" + id, house.addressDetail);
-		dwr.util.setValue("rooms" + id, house.rooms);
-		dwr.util.setValue("price" + id, house.price);
-		dwr.util.setValue("provider" + id, house.provider);
-		dwr.util.setValue("phone" + id, house.phone);
-		dwr.util.setValue("email" + id, house.email);
+		if (house) {
 		
-		dwr.util.setValue("houseid" + id, house.id);
+			dwr.util.setValue("address" + id, house.addressDetail);
+			dwr.util.setValue("rooms" + id, house.rooms);
+			dwr.util.setValue("price" + id, house.price);
+			dwr.util.setValue("provider" + id, house.provider);
+			dwr.util.setValue("phone" + id, house.phone);
+			dwr.util.setValue("email" + id, house.email);
+			
+			dwr.util.setValue("houseid" + id, house.id);
+		
+		}
 	}
 }
 
-var mymap;
-
 function load() {
-	mymap = new MyMap(lng, lat, 14);
+	mymap = new MyMap(lng, lat, zoom);
 	rentUtil.getServerTime(function(serverTime) {
 		timeDiff = new Date().getTime() - serverTime;
 	});
@@ -283,11 +375,6 @@ function load() {
 	fetchMarkers();
 }
   
-function gotoRent() {
-	var center = mymap.map.getCenter();
-	window.location.href = "house/add.jsp?lng=" + center.lng() + "&lat=" + center.lat() + "&zoom=" + mymap.map.getZoom();
-}
-
 function resizeApp() {
 	var offsetTop = 0;
 	var mapElem = $("map");
@@ -317,19 +404,18 @@ function resizeApp() {
 						<table>
 							<tr>
 								<td valign="top">
-									<c:import url="/common/userinfo.jsp"></c:import> 
-									<a href="#" onclick="gotoRent()">我要出租</a>
-									<a href="#">我要出售</a>
+									<c:import url="/common/userinfo.jsp"></c:import>
+									<a href="../?lng=${param.lng }&lat=${param.lat }&zoom=${param.zoom }">首页</a>
 								</td>
 							</tr>
 							<tr>
 								<td valign="bottom">
-									<a href="?lng=39.917&lat=116.397">北京</a> 
-									<a href="?lng=31.248&lat=121.473">上海</a> 
-									<a href="?lng=30.25&lat=120.167">杭州</a> 
-									<a href="?lng=22.5435&lat=114.1096">深圳</a> 
-									<a href="?lng=23.12&lat=113.25">广州</a> 
-									<a href="?lng=24.460&lat=118.079">厦门</a>
+									<a href="../?lat=39.917&lng=116.397">北京</a> 
+									<a href="../?lat=31.248&lng=121.473">上海</a> 
+									<a href="../?lat=30.25&lng=120.167">杭州</a> 
+									<a href="../?lat=22.5435&lng=114.1096">深圳</a> 
+									<a href="../?lat=23.12&lng=113.25">广州</a> 
+									<a href="../?lat=24.460&lng=118.079">厦门</a>
 									<a>其它城市</a>
 								</td>
 							</tr>
@@ -351,51 +437,8 @@ function resizeApp() {
 					
 					<td valign="top" width="240">
 						<div id="pannel" style="width: 240px; height: 300px; overflow: auto;">
-							<h3><a href="javascript: showHide('advancedSearch')">高级查找&nbsp;&raquo;</a></h3>
-							<div id="advancedSearch" style="display: none">
-							<form action="/" name="searchForm" id="searchForm" onsubmit="pageNo=1;fetchMarkers();return false">
-								<table>
-									<tr>
-										<td>
-											价格从 <input type="text" size="3" name="priceFrom" value=""/>
-											到 <input type="text" size="3" name="priceTo" value=""/>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											居室:<br/>
-											<select name="rooms">
-												<option value="" selected="selected">任意</option>
-												<option value="1">一居</option>
-												<option value="2">两居</option>
-												<option value="3">三居</option>
-												<option value="4">四居</option>
-												<option value="5">五居</option>
-												<option value="6">更多</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											包含以下文字:<br/>
-											<input type="text" size="20" name="keyword" value=""/>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<input type="radio" id="orderByDate" value="publishTime desc, price" name="orderBy" checked="checked"/><label for="orderByDate">先显示最近发布</label><br/> 
-											<input type="radio" id="orderByPrice" value="price, publishTime desc" name="orderBy"/><label for="orderByPrice">先显示价格低的</label>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<input type="submit" name="submit" value="查找..."/>
-										</td>
-									</tr>
-								</table>
-							</form>
-							</div>
-							<h3><span id="findingHouse">正在为您找房子...</span></h3>
+							<input type="button" value="发布出租信息" id="btnPublish" onclick="publishRent()"/>
+							<h3><span id="findingHouse">正在查找发布的信息...</span></h3>
 							<span id="pageNav"></span>
 							<table>
 								<tbody id="houseList">
@@ -432,7 +475,7 @@ function resizeApp() {
 
 <!-- 页面模板 -->
     <div id='tplEdit' style="display: none;">
-    	<strong>修改出租信息</strong><br/><br/>
+    	<strong><span id="editTitle">修改出租信息</span></strong><br/><br/>
     	<table>
     		<tr>
     			<td>地址:</td>
@@ -469,9 +512,31 @@ function resizeApp() {
     		</tr>
     		<tr>
     			<td><input type="hidden" name="houseid" id="houseid"/></td>
-    			<td><input type='button' value='确定' id='submitinfo' onclick='submitInfo()'/></td>
+    			<td>
+    				<input type='button' value='确定' id='submitinfo' onclick='submitInfo()'/>
+    				<input type="button" value="取消" onclick="mymap.map.closeInfoWindow()"/>
+    			</td>
     		</tr>
     	</table>
     </div>
+    
+<div style="display: none">
+	<div id="tplPublishHint">
+		<strong>1.请拖拽此标记到出租房屋的实际位置。</strong>
+	</div>
+	   
+    <div id="tplPublishing">
+    	<strong>正在发布信息，请稍候……</strong>
+    </div>
+    
+    <div id='tplPublished'>
+    	<strong>信息发布成功！</strong>
+    	<p/>
+		需要添加照片或视频吗？<br/>
+		<p/>
+		<input type='button' value='添加照片' /> 
+		<input type='button' value='添加视频' />
+	</div>
+</div>
 </body>
 </html>
