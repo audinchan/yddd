@@ -31,8 +31,8 @@ var roomDesc = ["", "一居 ", "两居 ", "三居 ", "四居 ", "五居 ", "多�
 var timeDiff = 0;
 var lngStr = "${param.lng}";
 var latStr = "${param.lat}";
-var lng = lngStr == "" ? 39.917 : parseFloat(lngStr);
-var lat = latStr == "" ? 116.397 : parseFloat(latStr);
+var lng = lngStr == "" ? 116.397 : parseFloat(lngStr);
+var lat = latStr == "" ? 39.917 : parseFloat(latStr);
 var houseCache = new Array();
 var markerCache = new Array();
 var lastClickId = "";
@@ -234,7 +234,7 @@ function MyMap(lng, lat, zoom) {
 	this.map.addControl(new GLargeMapControl ());
 	this.map.addControl(new GScaleControl());
 	this.map.addControl(new GOverviewMapControl());
-	this.map.setCenter(new GLatLng(lng, lat), zoom);
+	this.map.setCenter(new GLatLng(lat, lng), zoom);
      
 	GEvent.addListener(this.map, "zoomend", function() {
 		fetchMarkers();
@@ -298,7 +298,7 @@ function load() {
   
 function gotoRent() {
 	var center = mymap.map.getCenter();
-	window.location.href = "house/add.jsp?lng=" + center.lng() + "&lat=" + center.lat() + "&zoom=" + mymap.map.getZoom();
+	window.location.href = "house/list.jsp?add=1&lng=" + center.lng() + "&lat=" + center.lat() + "&zoom=" + mymap.map.getZoom();
 }
 
 function resizeApp() {
@@ -332,17 +332,16 @@ function resizeApp() {
 								<td valign="top">
 									<c:import url="/common/userinfo.jsp"></c:import> 
 									<a href="#" onclick="gotoRent()">我要出租</a>
-									<a href="#">我要出售</a>
 								</td>
 							</tr>
 							<tr>
 								<td valign="bottom">
-									<a href="?lng=39.917&lat=116.397">北京</a> 
-									<a href="?lng=31.248&lat=121.473">上海</a> 
-									<a href="?lng=30.25&lat=120.167">杭州</a> 
-									<a href="?lng=22.5435&lat=114.1096">深圳</a> 
-									<a href="?lng=23.12&lat=113.25">广州</a> 
-									<a href="?lng=24.460&lat=118.079">厦门</a>
+									<a href="./?lat=39.917&lng=116.397">北京</a> 
+									<a href="./?lat=31.248&lng=121.473">上海</a> 
+									<a href="./?lat=30.25&lng=120.167">杭州</a> 
+									<a href="./?lat=22.5435&lng=114.1096">深圳</a> 
+									<a href="./?lat=23.12&lng=113.25">广州</a> 
+									<a href="./?lat=24.460&lng=118.079">厦门</a>
 									<a>其它城市</a>
 								</td>
 							</tr>

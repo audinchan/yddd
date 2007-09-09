@@ -13,7 +13,8 @@
 密&nbsp;&nbsp;码: <input name="j_password" type="password" size="19"><br>
 <input name="submit" type="submit" value='登录'>
 <p>
-还没有建立帐号，<a href="${ctx }/reg/Register.a">点这里免费注册一个</a>。<p/>
+还没有建立帐号？<a href="${ctx }/reg/Register.a">点这里免费注册一个</a>。<p/>
+<a href="./?lng=${param.lng }&lat=${param.lat }&zoom=${param.zoom }">返回首页</a><p/>
 <c:if test="${not empty param.errcode}">
 <c:choose>
 	<c:when test='${param.errcode == 0}'><span class="error_common">登录名或密码错误。</span></c:when>

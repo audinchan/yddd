@@ -208,6 +208,10 @@ function getWindowWidth() {
 	return 0;
 }
 
-function errh(msg) {
-  alert(msg);
+function errh(msg, exception) {
+	if (exception && exception.javaClassName && exception.javaClassName.indexOf('PermissionDeniedException') != -1) {
+		alert('登录时间过长，请重新登录后再使用。');
+		return;
+	}
+  	alert("系统错误: " + msg);
 }

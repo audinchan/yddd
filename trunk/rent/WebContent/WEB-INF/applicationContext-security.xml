@@ -100,7 +100,7 @@
 	<bean id="logoutFilter"
 		class="org.acegisecurity.ui.logout.LogoutFilter">
 		<!-- 退出后指向的 URL -->
-		<constructor-arg value="/login.jsp?logout=true" />
+		<constructor-arg value="/" />
 		<constructor-arg>
 			<list>
 				<ref bean="rememberMeServices" />
@@ -202,7 +202,7 @@
 	</bean>
 
 	<!-- 设置DWR bean的权限 -->
-	<!--  
+ <!-- 
 	<bean id="autoProxyCreator"
 		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
@@ -212,10 +212,8 @@
 		</property>
 		<property name="beanNames">
 			<list>
-				<value>desUtil</value>
-				<value>deptUtil</value>
-				<value>reportUtil</value>
-				<value>archUtil</value>
+				<value>rentUtil</value>
+				<value>userUtil</value>
 			</list>
 		</property>
 	</bean>
@@ -230,9 +228,14 @@
 		</property>
 		<property name="objectDefinitionSource">
 			<value>
-				com.pkg.webapp.ajax.DesUtil.*=ROLE_906_9060
+				com.yodoo.rent.webapp.ajax.RentUtil.publishRent=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
+				com.yodoo.rent.webapp.ajax.RentUtil.saveHouse=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
+				com.yodoo.rent.webapp.ajax.RentUtil.saveHouseEdit=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
+				com.yodoo.rent.webapp.ajax.RentUtil.deleteHouse=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
+				com.yodoo.rent.webapp.ajax.RentUtil.changePosition=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
+				com.yodoo.rent.webapp.ajax.RentUtil.findUserHouses=ROLE_NORMALUSER,ROLE_ADMIN,ROLE_NORMALADMIN
 			</value>
 		</property>
 	</bean>
-	-->
+-->
 </beans>
