@@ -91,6 +91,16 @@ function tplClone(which, callback) {
 	return tpl(which + id);
 }
 
+function closeInfo() {
+	var he = $('houseid_edit');
+	var houseId = he ? $('houseid_edit').value : false;
+	mymap.map.closeInfoWindow();
+	if (! houseId) {
+		mymap.map.removeOverlay(newMarker);
+		$('btnPublish').disabled = false;
+	}
+}
+
 function publishRent() {
 	isMoved = false;
 	$('btnPublish').disabled = true;
@@ -122,6 +132,7 @@ function publishRent() {
 	addInfo = tplClone('tplPublishHint');
 	newMarker.openInfoWindowHtml(addInfo);
 
+	//$('btnCancel').onclick = cancelPublish;
 }
 
 function submitInfo() {
@@ -437,7 +448,7 @@ function resizeApp() {
 					
 					<td valign="top" width="240">
 						<div id="pannel" style="width: 240px; height: 300px; overflow: auto;">
-							<input type="button" value="发布出租信息" id="btnPublish" onclick="publishRent()"/>
+							<input style="font-size: 16pt; color: red;" type="button" value="发布出租信息" id="btnPublish" onclick="publishRent()"/>
 							<h3><span id="findingHouse">正在查找发布的信息...</span></h3>
 							<span id="pageNav"></span>
 							<table>
@@ -514,7 +525,7 @@ function resizeApp() {
     			<td><input type="hidden" name="houseid" id="houseid"/></td>
     			<td>
     				<input type='button' value='确定' id='submitinfo' onclick='submitInfo()'/>
-    				<input type="button" value="取消" onclick="mymap.map.closeInfoWindow()"/>
+    				<input type="button" value="取消" id="btnCancel" onclick="closeInfo()"/>
     			</td>
     		</tr>
     	</table>
@@ -522,7 +533,8 @@ function resizeApp() {
     
 <div style="display: none">
 	<div id="tplPublishHint">
-		<strong>1.请拖拽此标记到出租房屋的实际位置。</strong>
+		<strong>1.请拖拽此标记到出租房屋的实际位置。</strong><p/>
+		<input type="button" value="取消" onclick="closeInfo()"/>
 	</div>
 	   
     <div id="tplPublishing">
