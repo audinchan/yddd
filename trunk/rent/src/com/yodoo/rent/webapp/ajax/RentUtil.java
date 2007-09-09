@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.nestframework.commons.hibernate.IPage;
+import org.nestframework.commons.utils.StringUtil;
 
 import com.yodoo.rent.commons.PermissionDeniedException;
 import com.yodoo.rent.model.HouseInfo;
@@ -142,6 +143,72 @@ public class RentUtil {
 		return id;
 	}
 	
+	public HouseInfo saveHouseEdit(HouseInfo h, HttpSession s) {
+		if (log.isDebugEnabled()) {
+			log.debug("saveHouse(HouseInfo, HttpSession) - start");
+		}
+
+		User loginUser = BaseAction.getLoginUser(s);
+		if (loginUser == null) {
+			throw new PermissionDeniedException();
+		}
+		
+		if (StringUtil.isEmpty(h.getId())) {
+			throw new PermissionDeniedException();
+		}
+		
+		HouseInfo hi = houseInfoManager.get(h.getId());
+		
+		if (hi == null) {
+			throw new PermissionDeniedException();
+		}
+		
+		if (!hi.getUser().getUsername().equals(loginUser.getUsername())) {
+			throw new PermissionDeniedException();
+		}
+		
+		hi.setAddressDetail(h.getAddressDetail());
+		hi.setRooms(h.getRooms());
+		hi.setPrice(h.getPrice());
+		hi.setProvider(h.getProvider());
+		hi.setPhone(h.getPhone());
+		hi.setEmail(h.getEmail());
+		
+		hi.setPublishTime(new Date());
+
+		houseInfoManager.save(hi);
+		
+		if (log.isDebugEnabled()) {
+			log.debug("saveHouse(HouseInfo, HttpSession) - end");
+		}
+		return hi;
+	}
+	
+	public void deleteHouse(String id, HttpSession s) {
+		if (log.isDebugEnabled()) {
+			log.debug("delete(String, HttpSession) - start");
+		}
+
+		User loginUser = BaseAction.getLoginUser(s);
+		if (loginUser == null) {
+			throw new PermissionDeniedException();
+		}
+		HouseInfo hi = houseInfoManager.get(id);
+		
+		if (hi == null) {
+			throw new PermissionDeniedException();
+		}
+		
+		if (!hi.getUser().getUsername().equals(loginUser.getUsername())) {
+			throw new PermissionDeniedException();
+		}
+		houseInfoManager.remove(hi);
+
+		if (log.isDebugEnabled()) {
+			log.debug("delete(String, HttpSession) - end");
+		}
+	}
+	
 	/**
 	 * 修改某个发布信息的地理位置.
 	 * 
@@ -164,6 +231,7 @@ public class RentUtil {
 		
 		h.setLongitude(longitude);
 		h.setLatitude(latitude);
+		h.setPublishTime(new Date());
 		
 		houseInfoManager.save(h);
 
