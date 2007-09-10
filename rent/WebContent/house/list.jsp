@@ -421,13 +421,7 @@ function resizeApp() {
 							</tr>
 							<tr>
 								<td valign="bottom">
-									<a href="../?lat=39.917&lng=116.397">北京</a> 
-									<a href="../?lat=31.248&lng=121.473">上海</a> 
-									<a href="../?lat=30.25&lng=120.167">杭州</a> 
-									<a href="../?lat=22.5435&lng=114.1096">深圳</a> 
-									<a href="../?lat=23.12&lng=113.25">广州</a> 
-									<a href="../?lat=24.460&lng=118.079">厦门</a>
-									<a>其它城市</a>
+									<jsp:include page="/common/links_city.jsp"></jsp:include>
 								</td>
 							</tr>
 						</table>
