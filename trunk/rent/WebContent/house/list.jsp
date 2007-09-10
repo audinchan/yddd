@@ -153,7 +153,7 @@ function submitInfo() {
    			price: $("price_edit").value,
    			provider: $("provider_edit").value,
    			phone: $("phone_edit").value,
-   			email: $("email_edit").value, 
+   			email: $("email_edit").value
    		},
    		function(house) {
    			var id = house.id;
