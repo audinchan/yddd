@@ -67,6 +67,15 @@ var lng = lng1 == "" ? 116.397 : parseFloat(lng1);
 var lat = lat1 == "" ? 39.917 : parseFloat(lat1);
 var zoom = zoom1 == "" ? 14 : parseInt(zoom1);
 
+function Info(address, rooms, price, provider, phone, email) {
+	this.address = address;
+	this.rooms = rooms;
+	this.price = price;
+	this.provider = provider;
+	this.email = email;
+}
+
+var infos = new Info('',1,'','','','');
 
 
 function tpl(id) {
@@ -103,9 +112,21 @@ function closeInfo() {
 	}
 }
 
+function setMyInfos() {
+	dwr.util.setValue('address_edit', infos.address);
+	dwr.util.setValue('rooms_edit', infos.rooms);
+	dwr.util.setValue('price_edit', infos.price);
+	dwr.util.setValue('provider_edit', infos.provider);
+	dwr.util.setValue('phone_edit', infos.phone);
+	dwr.util.setValue('email_edit', infos.email);
+}
+
 function publishRent() {
 	isMoved = false;
 	$('btnPublish').disabled = true;
+	infos.address = '';
+	infos.rooms = 1;
+	infos.price = '';
 	
 	newMarker = new GMarker(mymap.map.getCenter(), {
 		draggable: true/*,
@@ -113,6 +134,7 @@ function publishRent() {
 	});
 	GEvent.addListener(newMarker, "click", function() {
 		newMarker.openInfoWindowHtml(addInfo);
+		setMyInfos();
 	});
 	
 	GEvent.addListener(newMarker, "dragstart", function() {
@@ -127,15 +149,7 @@ function publishRent() {
 			});
 		}
 		newMarker.openInfoWindowHtml(addInfo);
-		if (profile) {
-			$('provider_edit').value = profile.fullName;
-			if (profile.cellPhone) {
-				$('phone_edit').value = profile.cellPhone;
-			} else {
-				$('phone_edit').value = profile.phoneNo;
-			}
-			$('email_edit').value = profile.email;
-		}
+		setMyInfos();
 	});
 		  
 	mymap.map.addOverlay(newMarker);
@@ -396,7 +410,15 @@ function load() {
 	});
 	// 获取用户概要文件.
 	userUtil.getProfile(function(p) {
-		profile = p;
+		if (p) {
+			infos.provider = p.fullName;
+			if (p.cellPhone) {
+				infos.phone = p.cellPhone;
+			} else {
+				infos.phone = p.phoneNo;
+			}
+			infos.email = p.email;
+		}
 	});
 	resizeApp();
 	fetchMarkers();
@@ -500,12 +522,12 @@ function resizeApp() {
     	<table>
     		<tr>
     			<td>地址:</td>
-    			<td><input type='text' name='address' id='address' size='20' maxlength='20' /></td>
+    			<td><input type='text' name='address' id='address' size='20' maxlength='20' onchange="infos.address=this.value"/></td>
     		</tr>
     		<tr>
     			<td>居室:</td>
     			<td>
-			    	<select name='rooms' id='rooms'>
+			    	<select name='rooms' id='rooms' onchange="infos.rooms=this.value">
 			    		<option value='1'>一居</option>
 			    		<option value='2'>两居</option>
 			    		<option value='3'>三居</option>
@@ -517,19 +539,19 @@ function resizeApp() {
     		</tr>
     		<tr>
     			<td>租金:</td>
-    			<td><input type='text' name='price' id='price' size='3' maxlength='6' />元/月</td>
+    			<td><input type='text' name='price' id='price' size='3' maxlength='6' onchange="infos.price=this.value" />元/月</td>
     		</tr>
     		<tr>
     			<td>联系人:</td>
-    			<td><input type='text' name='provider' id='provider' size='20' maxlength='12' /></td>
+    			<td><input type='text' name='provider' id='provider' size='20' maxlength='12' onchange="infos.provider=this.value" /></td>
     		</tr>
     		<tr>
     			<td>电话:</td>
-    			<td><input type='text' name='phone' id='phone' size='20' maxlength='20' /></td>
+    			<td><input type='text' name='phone' id='phone' size='20' maxlength='20' onchange="infos.phone=this.value" /></td>
     		</tr>
     		<tr>
     			<td>Email:</td>
-    			<td><input type='text' name='email' id='email' size='20' maxlength='80' /></td>
+    			<td><input type='text' name='email' id='email' size='20' maxlength='80' onchange="infos.email=this.value" /></td>
     		</tr>
     		<tr>
     			<td><input type="hidden" name="houseid" id="houseid"/></td>
@@ -543,7 +565,7 @@ function resizeApp() {
     
 <div style="display: none">
 	<div id="tplPublishHint">
-		<strong>1.请拖拽此标记到出租房屋的实际位置。</strong><p/>
+		<strong>1.请此标记移到出租房屋的实际位置。</strong><p/>
 		<input type="button" value="取消" onclick="closeInfo()"/>
 	</div>
 	   
