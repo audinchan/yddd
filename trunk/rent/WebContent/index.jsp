@@ -22,17 +22,25 @@ html,body{overflow:hidden;}
 	type="text/javascript"></script>
 <script type="text/javascript">
 
+//<![CDATA[
 // 需要处理异常信息。
 dwr.engine.setErrorHandler(errh);
 
-//<![CDATA[
+var defaultLng = getCookie('lng');
+var defaultLat = getCookie('lat');
+if (! defaultLng) {
+	defaultLng = '116.397';
+}
+if (! defaultLat) {
+	defaultLat = '39.917';
+}
 
 var roomDesc = ["", "一居 ", "两居 ", "三居 ", "四居 ", "五居 ", "多居 "];
 var timeDiff = 0;
 var lngStr = "${param.lng}";
 var latStr = "${param.lat}";
-var lng = lngStr == "" ? 116.397 : parseFloat(lngStr);
-var lat = latStr == "" ? 39.917 : parseFloat(latStr);
+var lng = lngStr == "" ? parseFloat(defaultLng) : parseFloat(lngStr);
+var lat = latStr == "" ? parseFloat(defaultLat) : parseFloat(latStr);
 var houseCache = new Array();
 var markerCache = new Array();
 var lastClickId = "";
@@ -53,6 +61,12 @@ baseIcon.shadowSize = new GSize(37, 34);
 baseIcon.iconAnchor = new GPoint(9, 34);
 baseIcon.infoWindowAnchor = new GPoint(9, 2);
 baseIcon.infoShadowAnchor = new GPoint(18, 25);
+
+function setDefaultPos() {
+	var center = mymap.map.getCenter();
+	setCookie('lng', center.lng(), 10000);
+	setCookie('lat', center.lat(), 10000);
+}
 
 // 清除页面中的缓存（房屋信息和标注信息）
 function clearCache() {
@@ -332,6 +346,7 @@ function resizeApp() {
 								<td valign="top">
 									<c:import url="/common/userinfo.jsp"></c:import> 
 									<a href="#" onclick="gotoRent()">我要出租</a>
+									<a href="#" onclick="setDefaultPos()" title="将当前地图设为默认位置">设为默认位置</a>
 								</td>
 							</tr>
 							<tr>
