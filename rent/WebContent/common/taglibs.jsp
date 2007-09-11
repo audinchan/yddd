@@ -11,3 +11,4 @@
 <fmt:setBundle basename="messages"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <un:bind var="userKey" type="com.yodoo.rent.commons.Constant" field="USER_KEY"/>
+<un:bind var="profileKey" type="com.yodoo.rent.commons.Constant" field="PROFILE_KEY"/>
