@@ -208,7 +208,7 @@
 		</init-param>
 		<init-param>
 			<param-name>actionHandlers</param-name>
-			<param-value>org.nestframework.validation.ValidationActionHandler,org.nestframework.addons.spring.SpringBeanInitActionHandler,org.nestframework.action.defaults.ActionMethodBeforeInterceptHandler</param-value>
+			<param-value>org.nestframework.validation.ValidationActionHandler,org.nestframework.addons.spring.SpringBeanCreator,org.nestframework.addons.spring.SpringBeanInitActionHandler,org.nestframework.action.defaults.ActionMethodBeforeInterceptHandler</param-value>
 		</init-param>
 		<init-param>
 			<param-name>resourceFile</param-name>

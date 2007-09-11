@@ -15,6 +15,7 @@ import com.yodoo.rent.service.IUserManager;
 import com.yodoo.rent.webapp.action.BaseAction;
 
 @Validate
+@Spring
 public class Register extends BaseAction {
 	
 	@DefaultAction
@@ -33,8 +34,12 @@ public class Register extends BaseAction {
 	}
 	
 	//////////// services ////////////
-	@Spring
+	
 	private IUserManager userManager;
+
+	public void setUserManager(IUserManager userManager) {
+		this.userManager = userManager;
+	}
 	
 	//////////// properties ///////////
 	@Validations({
