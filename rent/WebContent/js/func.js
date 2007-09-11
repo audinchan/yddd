@@ -215,3 +215,36 @@ function errh(msg, exception) {
 	}
   	alert("系统错误: " + msg);
 }
+
+function setCookie(name,value,expires,path,domain,secure) {
+	var expDays = expires*24*60*60*1000;
+	var expDate = new Date();
+	expDate.setTime(expDate.getTime()+expDays);
+	var expString = ((expires==null) ? "" : (";expires="+expDate.toGMTString()))
+	var pathString = ((path==null) ? "" : (";path="+path))
+	var domainString = ((domain==null) ? "" : (";domain="+domain))
+	var secureString = ((secure==true) ? ";secure" : "" )
+	document.cookie = name + "=" + escape(value) + expString + pathString + domainString + secureString;
+}
+
+function getCookie(name) {
+	var result = null;
+	var myCookie = document.cookie + ";";
+	var searchName = name + "=";
+	var startOfCookie = myCookie.indexOf(searchName);
+	var endOfCookie;
+	if (startOfCookie != -1)
+	{
+	startOfCookie += searchName.length;
+	endOfCookie = myCookie.indexOf(";",startOfCookie);
+	result = unescape(myCookie.substring(startOfCookie, endOfCookie));
+	}
+	return result;
+}
+
+function clearCookie(name) {
+	var ThreeDays=3*24*60*60*1000;
+	var expDate = new Date();
+	expDate.setTime(expDate.getTime()-ThreeDays);
+	document.cookie=name+"=;expires="+expDate.toGMTString();
+}
