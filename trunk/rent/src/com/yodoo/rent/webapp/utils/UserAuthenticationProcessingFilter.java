@@ -57,6 +57,10 @@ public class UserAuthenticationProcessingFilter extends
                         User user = userManager.get(ud.getUsername());
                         httpSession.setAttribute(Constant.USER_KEY,
                             user);
+                        
+                        if (! user.getUserProfiles().isEmpty()) {
+                        	httpSession.setAttribute(Constant.PROFILE_KEY, user.getUserProfiles().iterator().next());
+                        }
                     }
                 }
 

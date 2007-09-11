@@ -56,6 +56,10 @@ public class Profile extends BaseAction {
 		user = userManager.get(user.getUsername());
 		profile.setUser(user);
 		userProfileManager.save(profile);
+		
+		// 更新Session中的Profile对象。
+		s.setAttribute(PROFILE_KEY, profile);
+		
 		return "/user/profile_show.jsp";
 	}
 	

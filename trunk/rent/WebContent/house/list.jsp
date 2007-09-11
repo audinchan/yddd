@@ -16,6 +16,7 @@ html,body{overflow:hidden;}
 <script src='../dwr/engine.js'></script>
 <script src='../dwr/util.js'></script>
 <script src='../dwr/interface/rentUtil.js'></script>
+<script src='../dwr/interface/userUtil.js'></script>
 <script src='../js/func.js'></script>
 <script
 	src="http://ditu.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAHGYqsQNmu-Zmlz7HIyBjBxTkC2hDZ_uphd3RfMN_0RVjLMwHphSBNw9kDe7ld4vZEiwsMbVQ9VzG2A"
@@ -54,6 +55,7 @@ var mymap;
 var newMarker;
 var addInfo;
 var isMoved = false;
+var profile;
 
 
 var lng1 = '${param.lng}';
@@ -125,6 +127,15 @@ function publishRent() {
 			});
 		}
 		newMarker.openInfoWindowHtml(addInfo);
+		if (profile) {
+			$('provider_edit').value = profile.fullName;
+			if (profile.cellPhone) {
+				$('phone_edit').value = profile.cellPhone;
+			} else {
+				$('phone_edit').value = profile.phoneNo;
+			}
+			$('email_edit').value = profile.email;
+		}
 	});
 		  
 	mymap.map.addOverlay(newMarker);
@@ -379,8 +390,13 @@ function openInfoOfHouse(houseId) {
 
 function load() {
 	mymap = new MyMap(lng, lat, zoom);
+	// 获取服务器与客户端的时间差.
 	rentUtil.getServerTime(function(serverTime) {
 		timeDiff = new Date().getTime() - serverTime;
+	});
+	// 获取用户概要文件.
+	userUtil.getProfile(function(p) {
+		profile = p;
 	});
 	resizeApp();
 	fetchMarkers();
