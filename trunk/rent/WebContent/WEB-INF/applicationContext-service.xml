@@ -23,13 +23,10 @@
 			expression="execution(* com.yodoo.rent.*service..*(..))" />
 		<aop:pointcut id="ajaxMethods"
 			expression="execution(* com.yodoo.rent.webapp.ajax..*(..))" />
-		<aop:pointcut id="actionMethods"
-			expression="execution(* com.yodoo.rent.webapp.action..*(..))" />
 
 		<aop:advisor advice-ref="txAdvice"
 			pointcut-ref="serviceMethods" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="ajaxMethods" />
-		<!-- aop:advisor advice-ref="txAdvice" pointcut-ref="actionMethods" />  -->
 	</aop:config>
 
 	<!-- Hibernate SessionFactory -->
