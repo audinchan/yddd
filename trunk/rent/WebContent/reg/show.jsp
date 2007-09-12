@@ -10,8 +10,10 @@
 <script src='../dwr/engine.js'></script>
 <script src='../dwr/util.js'></script>
 <script src='../dwr/interface/userUtil.js'></script>
+<script src='../js/func.js'></script>
 <script>
 function checkUser(un) {
+	d0("userExistError");
 	userUtil.checkUserExists(un, function(exists) {
 		if (exists) {
 			dwr.util.setValue("userExistError", "该用户名已经存在了，请换一个。");
