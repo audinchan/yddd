@@ -160,7 +160,68 @@ function publishRent() {
 	//$('btnCancel').onclick = cancelPublish;
 }
 
+//added by fuchun
+String.prototype.isPhone=function(){
+	var len = this.length;
+    var str = this;
+    if(this.isInteger()){
+   	    if(this.toInt()>0 && (len>=7 && len<=12)){
+		     return true;
+		}else{
+		     return false;
+	    }
+    }else{
+	    var	i = this.indexOf("-");
+		var j = this.lastIndexOf("-");
+	    var k = 0;
+	    var p = i;
+		while(p >= 0){  
+			str = str.substring(0, p).trim() + str.substring(p + 1, str.length).trim();
+			p = str.indexOf("-");
+	        k =k+1;
+		}
+		if(str.isInteger() && i>=3 && j<len-1 && k<=2 && str.length>=11){
+		      return true;
+		}else{
+		      return false;
+	    }
+	}
+}
+
+// added by fuchun
+function validateInfo(){
+	if($('address_edit').value.isEmpty()){
+  		alert("请输入房屋地址！");
+		return false;
+	}
+	if($("price_edit").value.isEmpty()){
+  		alert("请输入租金！");
+		return false;
+	}else if(!$("price_edit").value.isInteger() || $("price_edit").value.toInt()<=0){
+  		alert("无效的租金数额！");
+		return false;
+	}
+	if($("phone_edit").value.isEmpty()){
+  		alert("请输入联系电话！");
+		return false;
+	}else if(!$("phone_edit").value.isPhone()){
+	    alert("无效的电话号码！");
+		return false;	
+	}
+	if($("email_edit").value.isEmail() || $("email_edit").value.isEmpty()){
+		return true;	
+	}else{
+  		alert("无效的Email格式！");
+	    return false;
+	}
+}
+
 function submitInfo() {
+    //如果数据有效性验证没有通过，就不提交
+    if (!validateInfo()){
+       return false;
+    }
+    
 	var houseId = $('houseid_edit').value;
 	var marker = markerCache[houseId];
 	if (!marker) {
