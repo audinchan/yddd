@@ -14,6 +14,12 @@ import com.yodoo.rent.model.User;
  */
 public abstract class BaseAction implements Constant {
 	/**
+	 * 主题目录.
+	 * 
+	 * 如 "/51ditu" 表示主题的根目录为51ditu。
+	 */
+	protected String theme = "/gmap_";
+	/**
 	 * 当前页码.
 	 */
 	protected int pageNo = 1;
@@ -23,6 +29,10 @@ public abstract class BaseAction implements Constant {
 	 */
 	protected int pageSize = 10;
 	
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
+
 	public int getPageNo() {
 		return pageNo;
 	}
@@ -47,5 +57,13 @@ public abstract class BaseAction implements Constant {
 	 */
 	public static User getLoginUser(HttpSession s) {
 		return (User) s.getAttribute(USER_KEY);
+	}
+	
+	protected String getPaqe(String page) {
+		return theme + page;
+	}
+	
+	protected String getPage(String dir, String page) {
+		return dir + theme + page;
 	}
 }
