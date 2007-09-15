@@ -282,7 +282,8 @@ function deleteHouse(id) {
 			}
 			mymap.removeMarker(id);
 		});
-	}
+	resizeApp();
+	fetchMarkers();	}
 }
 
 function clearCache() {
