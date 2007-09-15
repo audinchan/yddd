@@ -281,6 +281,8 @@ function deleteHouse(id) {
 				el.parentNode.removeChild(el);
 			}
 			mymap.removeMarker(id);
+			// 重新刷新列表
+			fetchMarkers();
 		});
 	}
 }
