@@ -16,13 +16,29 @@
 <body>
 
 <form name="userForm" action="Profile.a" method="post">
+<table border="1">
+	<tr>
+		<td><fmt:message key="profile.fullName"/>:</td>
+		<td>${profile.fullName }
+		</td>
+	</tr>
+	<tr>
+		<td><fmt:message key="profile.phoneNo"/>:</td>
+		<td>${profile.phoneNo }</td>
+	</tr>
+	<tr>
+		<td><fmt:message key="profile.cellPhone"/>:</td>
+		<td>${profile.cellPhone }</td>
+	</tr>
+	<tr>
+		<td><fmt:message key="profile.email"/>:</td>
+		<td>${profile.email }</td>
+	</tr>
 
-姓名: ${profile.fullName }<br/>
-电话: ${profile.phoneNo }<br/>
-手机: ${profile.cellPhone }<br/>
-Email: ${profile.email }<p/>
+</table>
 
 <a href="Profile.a?edit">修改</a>
+<a href="../">首页</a>
 
 </form>
 </BODY>
