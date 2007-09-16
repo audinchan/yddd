@@ -27,6 +27,9 @@ public class Home extends BaseAction {
 		cityList = cityManager.getTopCityList();
 		String cid = (String) s.getAttribute(CURRENT_CITY);
 		if (StringUtil.isNotEmpty(cid)) {
+			City city = cityManager.get(cid);
+			lat = city.getLat();
+			lng = city.getLng();
 			areaList = areaManager.getTopAreaList(cid);
 		}
 		return getPage("index.jsp");
