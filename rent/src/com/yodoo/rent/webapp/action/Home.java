@@ -37,6 +37,7 @@ public class Home extends BaseAction {
 	
 	public Object toCity(HttpSession s) {
 		s.setAttribute(CURRENT_CITY, cityId);
+		cityManager.addHit(cityId);
 		return index(s);
 	}
 	

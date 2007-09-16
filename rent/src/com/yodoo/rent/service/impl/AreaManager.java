@@ -58,6 +58,7 @@ public class AreaManager extends BaseManager<Area, String> implements IAreaManag
 				area.setName(data[0]);
 				area.setLng(Float.parseFloat(data[1]));
 				area.setLat(Float.parseFloat(data[2]));
+				area.setHitCount(0);
 				
 				area.setCity(city);
 				
@@ -94,6 +95,10 @@ public class AreaManager extends BaseManager<Area, String> implements IAreaManag
 	@SuppressWarnings("unchecked")
 	public List<Area> getTopAreaList(String cityId) {
 		return getHibernateTemplate().find("from Area where city.id=? and tag='top'", cityId);
+	}
+
+	public void addHit(String areaId) {
+		getHibernateTemplate().bulkUpdate("update Area set hitCount=hitCount+1 where id=?", areaId);
 	}
 
 }

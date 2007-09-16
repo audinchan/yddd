@@ -14,5 +14,16 @@ public interface IAreaManager extends IBaseManager<Area, String> {
 	 */
 	public void importFromCSV(String cityId, InputStream stream);
 	
+	/**
+	 * 获取在首页显示的区域.
+	 * @param cityId 城市ID.
+	 * @return
+	 */
 	public List<Area> getTopAreaList(String cityId);
+	
+	/**
+	 * 增加某个区域的点击数.
+	 * @param areaId 区域ID.
+	 */
+	public void addHit(String areaId);
 }

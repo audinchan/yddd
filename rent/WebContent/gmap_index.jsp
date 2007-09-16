@@ -328,8 +328,10 @@ function resizeApp() {
 	}
 }
 
-function toArea(aLat, aLng) {
+function toArea(areaId, aLat, aLng) {
 	mymap.map.setCenter(new GLatLng(aLat, aLng), 14);
+	
+	rentUtil.addAreaHit(areaId);
 }
 
 //]]>
@@ -357,7 +359,7 @@ function toArea(aLat, aLng) {
 								<td valign="bottom">
 									<c:if test="${not empty cityList}">
 										<c:forEach items="${cityList }" var="city">
-											<a href="${ctx }/Home.a?toCity&cityId=${city.id }&lat=${city.lat }&lng=${city.lng }">${city.name }</a> 
+											<a href="${ctx }/Home.a?toCity&cityId=${city.id }&lat=${city.lat }&lng=${city.lng }" <c:if test="${sessionScope[cityKey] == city.id}">class='city_curr'</c:if>>${city.name }</a> 
 										</c:forEach>
 									</c:if>
 									<a>其它城市</a>
@@ -367,7 +369,7 @@ function toArea(aLat, aLng) {
 								<td valign="bottom">
 									<c:if test="${not empty areaList}">
 										<c:forEach items="${areaList }" var="area">
-											<a href="javascript: toArea(${area.lat}, ${area.lng })">${area.name }</a> 
+											<a href="javascript: toArea('${area.id }', ${area.lat}, ${area.lng })">${area.name }</a> 
 										</c:forEach>
 									</c:if>
 								</td>

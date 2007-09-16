@@ -8,6 +8,11 @@
 	background: yellow;
 }
 
+.city_curr {
+	color: white;
+	background: blue;
+}
+
 #paneltoggle {left: 20em;}
 
 #header {
