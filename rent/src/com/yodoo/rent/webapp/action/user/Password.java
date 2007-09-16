@@ -16,15 +16,14 @@ import com.yodoo.rent.service.IUserManager;
 import com.yodoo.rent.webapp.action.BaseAction;
 
 /**
- * ÉèÖÃÃÜÂë.
+ * è®¾ç½®å¯†ç .
  * 
  * @author audin
  *
  */
 public class Password extends BaseAction {
-	
 	/**
-	 * ÏÔÊ¾ÃÜÂëÉèÖÃÒ³Ãæ.
+	 * æ˜¾ç¤ºå¯†ç è®¾ç½®é¡µé¢.
 	 * 
 	 * @return
 	 */
@@ -34,13 +33,13 @@ public class Password extends BaseAction {
 	}
 	
 	/**
-	 * ĞŞ¸ÄÃÜÂë.
+	 * ä¿®æ”¹å¯†ç .
 	 * @param s HttpSession.
 	 * @return
 	 */
 	public Object changePassword(HttpSession s, ActionMessages errors) {
 		if (StringUtil.isNotSame(password, password2)) {
-			errors.add("password2", "Á½´ÎÊäÈëµÄÃÜÂë²»Ò»ÖÂ£¡");
+			errors.add("password2", "ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ä¸€è‡´ï¼");
 			return DEFAULT_PAGE;
 		}
 		
@@ -51,24 +50,24 @@ public class Password extends BaseAction {
 		return "!/user/Password.a";
 	}
 	
-	/////////////// Ò³Ãæ //////////
+	/////////////// é¡µé¢ //////////
 	
 	public static final String DEFAULT_PAGE = "/user/change_password.jsp";
 	
-	/////////////// ÒµÎñÀà /////////
+	/////////////// ä¸šåŠ¡ç±» /////////
 	
 	@Spring
 	private IUserManager userManager;
 	
-	/////////////// ÊôĞÔ ///////////
+	/////////////// å±æ€§ ///////////
 	
 	/**
-	 * Ìá½»µÄĞÂÃÜÂë.
+	 * æäº¤çš„æ–°å¯†ç .
 	 */
 	private String password;
 	
 	/**
-	 * ĞÂÃÜÂëÈ·ÈÏ.
+	 * æ–°å¯†ç ç¡®è®¤.
 	 */
 	private String password2;
 	

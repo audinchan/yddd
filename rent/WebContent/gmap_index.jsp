@@ -328,6 +328,10 @@ function resizeApp() {
 	}
 }
 
+function toArea(aLat, aLng) {
+	mymap.map.setCenter(new GLatLng(aLat, aLng), 14);
+}
+
 //]]>
 </script>
 </head>
@@ -351,7 +355,21 @@ function resizeApp() {
 							</tr>
 							<tr>
 								<td valign="bottom">
-									<jsp:include page="/common/links_city.jsp"></jsp:include>
+									<c:if test="${not empty cityList}">
+										<c:forEach items="${cityList }" var="city">
+											<a href="${ctx }/Home.a?toCity&cityId=${city.id }&lat=${city.lat }&lng=${city.lng }">${city.name }</a> 
+										</c:forEach>
+									</c:if>
+									<a>其它城市</a>
+								</td>
+							</tr>
+							<tr>
+								<td valign="bottom">
+									<c:if test="${not empty areaList}">
+										<c:forEach items="${areaList }" var="area">
+											<a href="javascript: toArea(${area.lat}, ${area.lng })">${area.name }</a> 
+										</c:forEach>
+									</c:if>
 								</td>
 							</tr>
 						</table>

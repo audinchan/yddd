@@ -18,14 +18,13 @@ import com.yodoo.rent.webapp.action.BaseAction;
  *
  */
 public class House extends BaseAction {
-	
 	@DefaultAction
 	public Object add() {
 		return "/house/add.jsp";
 	}
 	
 	/**
-	 * ÁĞ³öÎÒÒÑ¾­·¢²¼µÄ³ö×âĞÅÏ¢ÁĞ±í.
+	 * åˆ—å‡ºæˆ‘å·²ç»å‘å¸ƒçš„å‡ºç§Ÿä¿¡æ¯åˆ—è¡¨.
 	 * @param s
 	 * @return
 	 */
@@ -42,7 +41,7 @@ public class House extends BaseAction {
 	}
 	
 	/**
-	 * ĞŞ¸Ä³ö×âĞÅÏ¢.
+	 * ä¿®æ”¹å‡ºç§Ÿä¿¡æ¯.
 	 * @param s
 	 * @return
 	 */
@@ -52,7 +51,7 @@ public class House extends BaseAction {
 	}
 	
 	/**
-	 * É¾³ıÖ¸¶¨µÄ³ö×âĞÅÏ¢.
+	 * åˆ é™¤æŒ‡å®šçš„å‡ºç§Ÿä¿¡æ¯.
 	 * @return
 	 */
 	public Object delete() {

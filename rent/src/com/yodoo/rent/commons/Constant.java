@@ -10,12 +10,17 @@ package com.yodoo.rent.commons;
 public interface Constant {
 	
 	/**
-	 * µÇÂ¼ÓÃ»§ÔÚSessionÖĞµÄKey.
+	 * ç™»å½•ç”¨æˆ·åœ¨Sessionä¸­çš„Key.
 	 */
 	public static final String USER_KEY = "__login_user__";
 	
 	/**
-	 * ÓÃ»§¸ÅÒªÎÄ¼şÔÚSessionÖĞµÄKey.
+	 * ç”¨æˆ·æ¦‚è¦æ–‡ä»¶åœ¨Sessionä¸­çš„Key.
 	 */
 	public static final String PROFILE_KEY = "__profile__";
+	
+	/**
+	 * ç”¨æˆ·å½“å‰æ‰€åœ¨åŸå¸‚.
+	 */
+	public static final String CURRENT_CITY = "__current_city__";
 }
