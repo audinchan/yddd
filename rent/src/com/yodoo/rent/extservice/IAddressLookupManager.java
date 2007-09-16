@@ -14,4 +14,11 @@ public interface IAddressLookupManager {
 	 * @return
 	 */
 	public String getAddress(String ipAddress);
+	
+	/**
+	 * 根据地址解析坐标.
+	 * @param address
+	 * @return
+	 */
+	public LTPoint getLatLng(String address);
 }

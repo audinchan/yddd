@@ -11,6 +11,8 @@ import org.nestframework.addons.spring.Spring;
 import org.nestframework.annotation.DefaultAction;
 import org.nestframework.commons.utils.StringUtil;
 
+import com.yodoo.rent.extservice.IAddressLookupManager;
+import com.yodoo.rent.extservice.LTPoint;
 import com.yodoo.rent.model.Area;
 import com.yodoo.rent.model.City;
 import com.yodoo.rent.service.IAreaManager;
@@ -32,6 +34,18 @@ public class Home extends BaseAction {
 			lng = city.getLng();
 			areaList = areaManager.getTopAreaList(cid);
 		}
+		
+		if (StringUtil.isNotEmpty(ip)) {
+			address = addressLookupManager.getAddress(ip);
+		}
+		
+		if (StringUtil.isNotEmpty(address)) {
+			LTPoint p = addressLookupManager.getLatLng(address);
+			if (p != null) {
+				lat = p.getLat();
+				lng = p.getLng();
+			}
+		}
 		return getPage("index.jsp");
 	}
 	
@@ -47,6 +61,9 @@ public class Home extends BaseAction {
 	@Spring
 	private IAreaManager areaManager;
 	
+	@Spring
+	private IAddressLookupManager addressLookupManager;
+	
 	private Float lng;
 	
 	private Float lat;
@@ -54,6 +71,18 @@ public class Home extends BaseAction {
 	private Integer zoom;
 	
 	private String cityId;
+	
+	/**
+	 * 根据地址定位，用于测试。
+	 * TODO remove
+	 */
+	private String address;
+	
+	/**
+	 * IP地址，用于测试。
+	 * TODO remove
+	 */
+	private String ip;
 	
 	private List<City> cityList;
 	
@@ -89,6 +118,22 @@ public class Home extends BaseAction {
 
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public List<City> getCityList() {
