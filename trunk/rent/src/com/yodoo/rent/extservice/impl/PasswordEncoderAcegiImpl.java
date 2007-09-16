@@ -8,7 +8,7 @@ import org.acegisecurity.providers.encoding.PasswordEncoder;
 import com.yodoo.rent.extservice.IPasswordEncoder;
 
 /**
- * 使用ACEGI进行密码加密.
+ * 浣跨敤ACEGI杩涜瀵嗙爜鍔犲瘑.
  * @author audin
  *
  */

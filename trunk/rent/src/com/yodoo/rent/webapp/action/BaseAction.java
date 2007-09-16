@@ -14,18 +14,18 @@ import com.yodoo.rent.model.User;
  */
 public abstract class BaseAction implements Constant {
 	/**
-	 * Ö÷ÌâÄ¿Â¼.
+	 * ä¸»é¢˜ç›®å½•.
 	 * 
-	 * Èç "/51ditu" ±íÊ¾Ö÷ÌâµÄ¸ùÄ¿Â¼Îª51ditu¡£
+	 * å¦‚ "/51ditu" è¡¨ç¤ºä¸»é¢˜çš„æ ¹ç›®å½•ä¸º51dituã€‚
 	 */
 	protected String theme = "/gmap_";
 	/**
-	 * µ±Ç°Ò³Âë.
+	 * å½“å‰é¡µç .
 	 */
 	protected int pageNo = 1;
 	
 	/**
-	 * ·ÖÒ³´óĞ¡.
+	 * åˆ†é¡µå¤§å°.
 	 */
 	protected int pageSize = 10;
 	
@@ -50,16 +50,16 @@ public abstract class BaseAction implements Constant {
 	}
 
 	/**
-	 * ´ÓSessionÖĞ»ñÈ¡µÇÂ¼ÓÃ»§¶ÔÏó.
+	 * ä»Sessionä¸­è·å–ç™»å½•ç”¨æˆ·å¯¹è±¡.
 	 * 
 	 * @param s HttpSession.
-	 * @return User¶ÔÏó.
+	 * @return Userå¯¹è±¡.
 	 */
 	public static User getLoginUser(HttpSession s) {
 		return (User) s.getAttribute(USER_KEY);
 	}
 	
-	protected String getPaqe(String page) {
+	protected String getPage(String page) {
 		return theme + page;
 	}
 	

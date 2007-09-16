@@ -15,7 +15,7 @@ import com.yodoo.rent.service.IHouseInfoManager;
 import com.yodoo.rent.webapp.action.BaseAction;
 
 /**
- * Í¼Æ¬ÉÏ´«²Ù×÷.
+ * Í¼å›¾ç‰‡ä¸Šä¼ æ“ä½œ.
  * 
  * @author audin
  *
@@ -32,14 +32,14 @@ public class Photo extends BaseAction {
 		return new Redirect("/house/Photo.a?id=" + id);
 	}
 
-/////////////// ÒµÎñÀà /////////
+/////////////// ä¸šåŠ¡ç±» /////////
 	@Spring
 	private IUploadManager uploadManager;
 	
 	@Spring
 	private IHouseInfoManager houseInfoManager;
 	
-/////////////// ÊôĞÔ ///////////
+/////////////// å±æ€§ ///////////
 	
 	private FileItem file1;
 	
@@ -52,12 +52,12 @@ public class Photo extends BaseAction {
 	private FileItem file5;
 	
 	/**
-	 * ·¿ÎİĞÅÏ¢±êÊ¶ºÅ.
+	 * æˆ¿å±‹ä¿¡æ¯æ ‡è¯†å·.
 	 */
 	private String id;
 
 	/**
-	 * ·¿Îİ»ù±¾ĞÅÏ¢.
+	 * æˆ¿å±‹åŸºæœ¬ä¿¡æ¯.
 	 */
 	private HouseInfo houseInfo;
 	
@@ -111,6 +111,5 @@ public class Photo extends BaseAction {
 
 	public HouseInfo getHouseInfo() {
 		return houseInfo;
-	}
-	
+	}	
 }

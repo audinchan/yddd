@@ -24,7 +24,7 @@ public class HouseInfoManager extends BaseManager<HouseInfo, String> implements
 	 * Logger for this class
 	 */
 	private static final Log log = LogFactory.getLog(HouseInfoManager.class);
-
+	
 	@SuppressWarnings("unchecked")
 	public HouseInfo[] loadRangeInfos(final float minLng, final float maxLng, final float minLat,
 			final float maxLat) {
@@ -124,5 +124,4 @@ public class HouseInfoManager extends BaseManager<HouseInfo, String> implements
 		}
 		return page;
 	}
-
 }

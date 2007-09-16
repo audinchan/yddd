@@ -22,7 +22,7 @@ import com.yodoo.rent.service.IUserManager;
 import com.yodoo.rent.webapp.action.BaseAction;
 
 /**
- * ³ö×âĞÅÏ¢·¢²¼Ajax¹¤¾ßÀà.
+ * å‡ºç§Ÿä¿¡æ¯å‘å¸ƒAjaxå·¥å…·ç±».
  * 
  * @author audin
  * 
@@ -62,17 +62,17 @@ public class RentUtil {
 	}
 
 	/**
-	 * ·¢²¼³ö×âĞÅÏ¢£¬²¢·µ»Ø±êÊ¶ºÅ¡£
+	 * å‘å¸ƒå‡ºç§Ÿä¿¡æ¯ï¼Œå¹¶è¿”å›æ ‡è¯†å·ã€‚
 	 * 
-	 * @param longitude ¾­¶È
-	 * @param latitude Î³¶È
-	 * @param address ÏêÏ¸µØÖ·
-	 * @param rooms ¾ÓÊÒÊı
-	 * @param price ¼Û¸ñ
-	 * @param provider ÁªÏµÈË
-	 * @param phone µç»°
-	 * @param email ÓÊ¼şµØÖ·
-	 * @return ±êÊ¶ºÅ
+	 * @param longitude ç»åº¦
+	 * @param latitude çº¬åº¦
+	 * @param address è¯¦ç»†åœ°å€
+	 * @param rooms å±…å®¤æ•°
+	 * @param price ä»·æ ¼
+	 * @param provider è”ç³»äºº
+	 * @param phone ç”µè¯
+	 * @param email é‚®ä»¶åœ°å€
+	 * @return æ ‡è¯†å·
 	 */
 	public String publishRent(float longitude, float latitude, String address,
 			int rooms, int price, String provider, String phone, String email,
@@ -159,7 +159,7 @@ public class RentUtil {
 		
 		HouseInfo hi = h;
 		
-		if (StringUtil.isNotEmpty(h.getId())) { // ĞŞ¸Ä
+		if (StringUtil.isNotEmpty(h.getId())) { // ä¿®æ”¹
 			hi = houseInfoManager.get(h.getId());
 			
 			if (hi == null) {
@@ -176,7 +176,7 @@ public class RentUtil {
 			hi.setProvider(h.getProvider());
 			hi.setPhone(h.getPhone());
 			hi.setEmail(h.getEmail());
-		} else { // Ìí¼Ó
+		} else { // æ·»åŠ 
 			hi.setProvince(1);
 			hi.setCity(1);
 			hi.setArea(1);
@@ -220,11 +220,11 @@ public class RentUtil {
 	}
 	
 	/**
-	 * ĞŞ¸ÄÄ³¸ö·¢²¼ĞÅÏ¢µÄµØÀíÎ»ÖÃ.
+	 * ä¿®æ”¹æŸä¸ªå‘å¸ƒä¿¡æ¯çš„åœ°ç†ä½ç½®.
 	 * 
-	 * @param houseId ·¿Îİ±êÊ¶ºÅ.
-	 * @param longitude ¾­¶È.
-	 * @param latitude Î³¶È.
+	 * @param houseId æˆ¿å±‹æ ‡è¯†å·.
+	 * @param longitude ç»åº¦.
+	 * @param latitude çº¬åº¦.
 	 */
 	public void changePosition(String houseId, float longitude, float latitude, HttpSession s) {
 		if (log.isDebugEnabled()) {
@@ -264,7 +264,7 @@ public class RentUtil {
 	}
 	
 	/**
-	 * »ñÈ¡·şÎñÆ÷µÄµ±Ç°Ê±¼ä£¨Î¢Ãë£©.
+	 * è·å–æœåŠ¡å™¨çš„å½“å‰æ—¶é—´ï¼ˆå¾®ç§’ï¼‰.
 	 * @return
 	 */
 	public long getServerTime() {

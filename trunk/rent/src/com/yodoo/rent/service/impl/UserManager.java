@@ -12,24 +12,23 @@ import com.yodoo.rent.service.IRoleManager;
 import com.yodoo.rent.service.IUserManager;
 
 public class UserManager extends BaseManager<User, String> implements IUserManager {
-	
 	/**
-	 * ½ÇÉ«Manager.
+	 * è§’è‰²Manager.
 	 */
 	private IRoleManager roleManager;
 	
 	/**
-	 * ÃÜÂë¼ÓÃÜ½Ó¿Ú.
+	 * å¯†ç åŠ å¯†æ¥å£.
 	 */
 	private IPasswordEncoder passwordEncoder;
 	
 	/**
-	 * Ä¬ÈÏÊÇ·ñ¼¤»îÓÃ»§.
+	 * é»˜è®¤æ˜¯å¦æ¿€æ´»ç”¨æˆ·.
 	 */
 	private boolean defaultEnabled = true;
 	
 	/**
-	 * ×¢²áÓÃ»§µÄºó¼ÌÊÂ¼ş´¦ÀíÆ÷.
+	 * æ³¨å†Œç”¨æˆ·çš„åç»§äº‹ä»¶å¤„ç†å™¨.
 	 */
 	private IAfterUserRegister afterUserRegister;
 	
@@ -52,19 +51,19 @@ public class UserManager extends BaseManager<User, String> implements IUserManag
 	
 
 	/**
-	 * ×¢²áÓÃ»§.
-	 * @param user ×¢²áÓÃ»§ĞÅÏ¢.
-	 * @param operator ²Ù×÷Õß.
+	 * æ³¨å†Œç”¨æˆ·.
+	 * @param user æ³¨å†Œç”¨æˆ·ä¿¡æ¯.
+	 * @param operator æ“ä½œè€….
 	 */
 	public void registerUser(User user, User operator) {
 		if (null != get(user.getUsername())) {
 			throw new UserExistsException();
 		}
 		
-		// Ê¹ÓÃÏµÍ³ÃÜÂë¼ÓÃÜ¹¤¾ß½øĞĞÃÜÂë¼ÓÃÜ
+		// ä½¿ç”¨ç³»ç»Ÿå¯†ç åŠ å¯†å·¥å…·è¿›è¡Œå¯†ç åŠ å¯†
 		user.setPassword(passwordEncoder.encodePassword(user.getPassword()));
 		
-		// ·ÖÅäÄ¬ÈÏ½ÇÉ«
+		// åˆ†é…é»˜è®¤è§’è‰²
 		user.getRoles().add(roleManager.getDefaultRole());
 		
 		user.setEnabled(defaultEnabled);
@@ -75,7 +74,7 @@ public class UserManager extends BaseManager<User, String> implements IUserManag
 		
 		save(user);
 		
-		// ´¦ÀíÓÃ»§×¢²á³É¹¦µÄÊÂ¼ş¡£
+		// å¤„ç†ç”¨æˆ·æ³¨å†ŒæˆåŠŸçš„äº‹ä»¶ã€‚
 		if (afterUserRegister != null) {
 			afterUserRegister.afterRegisterUser(user, operator);
 		}

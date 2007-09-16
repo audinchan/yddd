@@ -9,23 +9,22 @@ import com.yodoo.rent.model.HouseInfo;
 
 
 public interface IHouseInfoManager extends IBaseManager<HouseInfo, String> {
-	
 	public HouseInfo[] loadRangeInfos(float minLgn, float maxLgn, float minLat, float maxLat);
 	
 	/**
-	 * ¸ù¾İÌõ¼ş²éÕÒ³ö×âĞÅÏ¢·ÖÒ³¶ÔÏó.
+	 * æ ¹æ®æ¡ä»¶æŸ¥æ‰¾å‡ºç§Ÿä¿¡æ¯åˆ†é¡µå¯¹è±¡.
 	 * 
-	 * @param params Ò³ÃæÌá½»µÄ²ÎÊı¼¯ºÏ.
-	 * @param pageNo Ò³Âë.
-	 * @param pageSize ·ÖÒ³´óĞ¡.
-	 * @return ·ÖÒ³¶ÔÏó.
+	 * @param params é¡µé¢æäº¤çš„å‚æ•°é›†åˆ.
+	 * @param pageNo é¡µç .
+	 * @param pageSize åˆ†é¡µå¤§å°.
+	 * @return åˆ†é¡µå¯¹è±¡.
 	 */
 	public IPage<HouseInfo> findHouses(final Map<String, Object> params, final int pageNo, final int pageSize);
 	
 	/**
-	 * ²éÕÒÓÃ»§·¢²¼µÄ³ö×âĞÅÏ¢.
-	 * @param username ÓÃ»§Ãû.
-	 * @param keyword ¹Ø¼ü×Ö.
+	 * æŸ¥æ‰¾ç”¨æˆ·å‘å¸ƒçš„å‡ºç§Ÿä¿¡æ¯.
+	 * @param username ç”¨æˆ·å.
+	 * @param keyword å…³é”®å­—.
 	 * @param pageNo 
 	 * @param pageSize
 	 * @return
