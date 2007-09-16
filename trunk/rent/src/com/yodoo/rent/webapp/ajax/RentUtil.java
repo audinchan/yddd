@@ -17,6 +17,8 @@ import org.nestframework.commons.utils.StringUtil;
 import com.yodoo.rent.commons.PermissionDeniedException;
 import com.yodoo.rent.model.HouseInfo;
 import com.yodoo.rent.model.User;
+import com.yodoo.rent.service.IAreaManager;
+import com.yodoo.rent.service.ICityManager;
 import com.yodoo.rent.service.IHouseInfoManager;
 import com.yodoo.rent.service.IUserManager;
 import com.yodoo.rent.webapp.action.BaseAction;
@@ -36,6 +38,10 @@ public class RentUtil {
 	private IHouseInfoManager houseInfoManager;
 	
 	private IUserManager userManager;
+	
+	private IAreaManager areaManager;
+	
+	private ICityManager cityManager;
 
 	public void setHouseInfoManager(IHouseInfoManager houseInfoManager) {
 		if (log.isDebugEnabled()) {
@@ -59,6 +65,15 @@ public class RentUtil {
 		if (log.isDebugEnabled()) {
 			log.debug("setUserManager(IUserManager) - end");
 		}
+	}
+
+	public void setAreaManager(IAreaManager areaManager) {
+		this.areaManager = areaManager;
+	}
+	
+
+	public void setCityManager(ICityManager cityManager) {
+		this.cityManager = cityManager;
 	}
 
 	/**
@@ -306,5 +321,13 @@ public class RentUtil {
 			log.debug("findUserHouses(String, int, int, HttpSession) - end");
 		}
 		return page;
+	}
+	
+	public void addAreaHit(String areaId) {
+		areaManager.addHit(areaId);
+	}
+	
+	public void addCityHit(String cityId) {
+		cityManager.addHit(cityId);
 	}
 }

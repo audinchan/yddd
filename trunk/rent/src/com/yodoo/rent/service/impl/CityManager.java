@@ -41,6 +41,7 @@ public class CityManager extends BaseManager<City, String> implements ICityManag
 				city.setName(data[0]);
 				city.setLng(Float.parseFloat(data[1]));
 				city.setLat(Float.parseFloat(data[2]));
+				city.setHitCount(0);
 				
 				save(city);
 			}
@@ -74,6 +75,10 @@ public class CityManager extends BaseManager<City, String> implements ICityManag
 	@SuppressWarnings("unchecked")
 	public List<City> getTopCityList() {
 		return getHibernateTemplate().find("from City where tag='top'");
+	}
+
+	public void addHit(String cityId) {
+		getHibernateTemplate().bulkUpdate("update City set hitCount=hitCount+1 where id=?", cityId);
 	}
 	
 	
