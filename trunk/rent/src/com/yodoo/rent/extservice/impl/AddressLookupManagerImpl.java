@@ -1,11 +1,22 @@
 package com.yodoo.rent.extservice.impl;
 
+import java.util.List;
+
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.yodoo.rent.extservice.IAddressLookupManager;
+import com.yodoo.rent.extservice.LTPoint;
+import com.yodoo.rent.model.City;
+import com.yodoo.rent.service.ICityManager;
 
 public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 		IAddressLookupManager {
+	
+	private ICityManager cityManager;
+
+	public void setCityManager(ICityManager cityManager) {
+		this.cityManager = cityManager;
+	}
 
 	public String getAddress(String ipAddress) {
 		long ip = ipToLong(ipAddress);
@@ -13,6 +24,17 @@ public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 				.queryForObject(
 						"select country from iptable where start_ip <= ? and end_ip >= ?",
 						new Object[] { ip, ip }, String.class);
+	}
+
+	public LTPoint getLatLng(String address) {
+		// TODO 增加Cache处理，以提高效率。
+		List<City> list = cityManager.findAll();
+		for (City city : list) {
+			if (address.indexOf(city.getName()) != -1) {
+				return new LTPoint(city.getName(), address, city.getLat(), city.getLng());
+			}
+		}
+		return null;
 	}
 
 	/**
