@@ -9,6 +9,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
 		<property name="passwordEncoder" ref="systemPasswordEncoder" />
 	</bean>
 	
+	<bean id="addressLookupManager" class="com.yodoo.rent.extservice.impl.AddressLookupManagerImpl"></bean>
+	
 	<bean id="rentUtil" class="com.yodoo.rent.webapp.ajax.RentUtil"></bean>
 	<bean id="userUtil" class="com.yodoo.rent.webapp.ajax.UserUtil"></bean>
 </beans>

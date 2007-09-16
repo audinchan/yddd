@@ -9,12 +9,14 @@ import org.apache.commons.logging.LogFactory;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nestframework.commons.hibernate.IPage;
 import org.nestframework.commons.utils.StringUtil;
 
 import com.yodoo.rent.commons.PermissionDeniedException;
+import com.yodoo.rent.extservice.IAddressLookupManager;
 import com.yodoo.rent.model.HouseInfo;
 import com.yodoo.rent.model.User;
 import com.yodoo.rent.service.IAreaManager;
@@ -42,6 +44,8 @@ public class RentUtil {
 	private IAreaManager areaManager;
 	
 	private ICityManager cityManager;
+	
+	private IAddressLookupManager addressLookupManager;
 
 	public void setHouseInfoManager(IHouseInfoManager houseInfoManager) {
 		if (log.isDebugEnabled()) {
@@ -74,6 +78,10 @@ public class RentUtil {
 
 	public void setCityManager(ICityManager cityManager) {
 		this.cityManager = cityManager;
+	}
+
+	public void setAddressLookupManager(IAddressLookupManager addressLookupManager) {
+		this.addressLookupManager = addressLookupManager;
 	}
 
 	/**
@@ -329,5 +337,15 @@ public class RentUtil {
 	
 	public void addCityHit(String cityId) {
 		cityManager.addHit(cityId);
+	}
+	
+	/**
+	 * 获取客户端地址.
+	 * @param req
+	 * @return
+	 */
+	public String getLocation(HttpServletRequest req) {
+		String ipAddress = req.getRemoteAddr();
+		return addressLookupManager.getAddress(ipAddress);
 	}
 }

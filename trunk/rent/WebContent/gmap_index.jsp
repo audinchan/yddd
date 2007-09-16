@@ -308,6 +308,10 @@ function load() {
 	});
 	resizeApp();
 	fetchMarkers();
+	
+	rentUtil.getLocation(function(addr){
+		dwr.util.setValue("userAddress", addr);
+	});
 }
   
 function gotoRent() {
@@ -352,7 +356,8 @@ function toArea(areaId, aLat, aLng) {
 								<td valign="top">
 									<c:import url="/common/userinfo.jsp"></c:import> 
 									<a href="#" onclick="gotoRent()">我要出租</a>
-									<a href="#" onclick="setDefaultPos()" title="将当前地图设为默认位置">设为默认位置</a>
+									<a href="#" onclick="setDefaultPos()" title="将当前地图设为默认位置">设为默认位置</a> 
+									<span id="userAddress"></span>
 								</td>
 							</tr>
 							<tr>
