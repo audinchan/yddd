@@ -21,4 +21,10 @@ public interface IAddressLookupManager {
 	 * @return
 	 */
 	public LTPoint getLatLng(String address);
+	
+	/**
+	 * 从IP地址库中获取随机的地址信息，用于测试。
+	 * @return
+	 */
+	public String getRandomAddress();
 }
