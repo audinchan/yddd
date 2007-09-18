@@ -3,20 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>找房子</title>
-<link rel="stylesheet" href="../css/main.css" />
+<title>地图定位辅助</title>
 <style type="text/css">
 v\:* {behavior: url(#default#VML);}
 html,body{overflow:hidden;}
-#map {margin-left:0;left:0;margin-right:0;border-width: 0px 1px 1px 1px;}
+#map {margin-left:0;left:0;margin-right:0;border-width: 1px 1px 1px 1px;border-color: gray;}
 </style>
-<script src='../js/func.js'></script>
 <script
 	src="http://ditu.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAHGYqsQNmu-Zmlz7HIyBjBxTkC2hDZ_uphd3RfMN_0RVjLMwHphSBNw9kDe7ld4vZEiwsMbVQ9VzG2A"
 	type="text/javascript"></script>
 <script type="text/javascript">
-
 //<![CDATA[
+$ = function (id) {
+	return document.getElementById(id);
+}
 
 // 自定义的地图类
 function MyMap(lng, lat, zoom) {
