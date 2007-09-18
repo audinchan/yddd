@@ -19,7 +19,7 @@
 <nest:errors/>
 </span>
 
-<form name="importForm" action="CityMgr.a" enctype="multipart/form-data" method="post" onsubmit="return validate_importForm(this)">
+<form name="importForm" action="ProvinceMgr.a" enctype="multipart/form-data" method="post" onsubmit="return validate_importForm(this)">
 <nest:from/>
 
 <table border="1">
@@ -30,16 +30,6 @@
 		</td>
 	</tr>
 	<tr>
-		<td>省份:</td>
-		<td>
-			<select name="provinceId">
-				<c:forEach items="${provinceList }" var="province">
-					<option value="${province.id }">${province.name }</option>
-				</c:forEach>
-			</select>
-		</td>
-	</tr>
-	<tr>
 		<td></td>
 		<td>
 		<input type="submit" value='导入' name="importCSV">
@@ -47,12 +37,7 @@
 	</tr>
 </table>
 
-管理区域:<p>
-<c:forEach items="${provinceList }" var="province">
-	<a href="AreaMgr.a?provinceId=${province.id }" target=_blank>${province.name }</a><br>
-</c:forEach>
-
 </form>
 </BODY>
-<nest:javascript action="/admin/CityMgr.a" form="importForm" on="importCSV"/>
+<nest:javascript action="/admin/ProvinceMgr.a" form="importForm" on="importCSV"/>
 </HTML>

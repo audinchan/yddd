@@ -12,7 +12,7 @@ public interface ICityManager extends IBaseManager<City, String> {
 	 * 从数据流中导入城市列表.
 	 * @param stream
 	 */
-	public void importFormCSV(InputStream stream);
+	public void importFormCSV(String provinceId, InputStream stream);
 	
 	/**
 	 * 获取在首页显示的城市.
@@ -25,4 +25,6 @@ public interface ICityManager extends IBaseManager<City, String> {
 	 * @param cityId 城市ID.
 	 */
 	public void addHit(String cityId);
+	
+	public List<City> findCityOfProvince(String provinceId);
 }

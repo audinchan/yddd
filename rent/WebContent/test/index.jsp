@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>找房子</title>
+<title>测试随机地址解析</title>
 <link rel="stylesheet" href="../css/main.css" />
 <style type="text/css">
 v\:* {behavior: url(#default#VML);}
@@ -62,7 +62,7 @@ var mymap;
 function load() {
 	mymap = new MyMap(116.397, 39.917, 11);
 	
-	setInterval("getRandomAddr()",5000);
+	setInterval("getRandomAddr()",10000);
 }
 
 //]]>

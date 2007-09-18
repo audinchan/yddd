@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href='CityMgr.a'>城市管理</a><p/>
-<a href='AreaMgr.a'>区域管理</a>
+<a href='ProvinceMgr.a'>省份管理</a><p/>
+<a href='CityMgr.a'>城市管理</a>
 </body>
 </html>
