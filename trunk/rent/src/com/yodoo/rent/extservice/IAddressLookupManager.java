@@ -3,6 +3,10 @@
  */
 package com.yodoo.rent.extservice;
 
+import java.util.List;
+
+import com.yodoo.rent.model.City;
+
 /**
  * @author audin
  *
@@ -27,4 +31,12 @@ public interface IAddressLookupManager {
 	 * @return
 	 */
 	public String getRandomAddress();
+	
+	/**
+	 * 查找最近的城市.
+	 * @param lat
+	 * @param lng
+	 * @return
+	 */
+	public List<City> findNearCitys(float lat, float lng);
 }

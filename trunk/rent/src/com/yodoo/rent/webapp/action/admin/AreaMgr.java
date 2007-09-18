@@ -19,7 +19,7 @@ public class AreaMgr extends BaseAction {
 
 	@DefaultAction
 	public Object show() {
-		cityList = cityManager.findAll();
+		cityList = cityManager.findCityOfProvince(provinceId);
 		return "/admin/area_import.jsp";
 	}
 	
@@ -44,6 +44,8 @@ public class AreaMgr extends BaseAction {
 	@Validate(type="required", label="城市", labelFromResource=false, on="importCSV")
 	private String cityId;
 	
+	private String provinceId;
+	
 	private FileItem file;
 	
 	private List<City> cityList;
@@ -54,6 +56,14 @@ public class AreaMgr extends BaseAction {
 
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
+	}
+
+	public String getProvinceId() {
+		return provinceId;
+	}
+
+	public void setProvinceId(String provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	public FileItem getFile() {

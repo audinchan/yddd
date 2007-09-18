@@ -14,6 +14,7 @@
         <mapping resource="com/yodoo/rent/model/User.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/HouseInfo.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/City.hbm.xml" />
+        <mapping resource="com/yodoo/rent/model/Province.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/Media.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/LocationCache.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/UserProfile.hbm.xml" />

@@ -2,22 +2,31 @@ package com.yodoo.rent.extservice.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.yodoo.rent.extservice.IAddressLookupManager;
 import com.yodoo.rent.extservice.LTPoint;
+import com.yodoo.rent.model.City;
 
 public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 		IAddressLookupManager {
+	
+	private int nearCitysLimitCount = 10;
 	
 //	private ICityManager cityManager;
 //
 //	public void setCityManager(ICityManager cityManager) {
 //		this.cityManager = cityManager;
 //	}
+
+	public void setNearCitysLimitCount(int nearCitysLimitCount) {
+		this.nearCitysLimitCount = nearCitysLimitCount;
+	}
 
 	public String getAddress(String ipAddress) {
 		long ip = ipToLong(ipAddress);
@@ -95,6 +104,25 @@ public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 	public String getRandomAddress() {
 		// mysql 语法
 		return (String) getJdbcTemplate().queryForObject("select country from iptable order by rand() limit 0, 1", String.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<City> findNearCitys(float lat, float lng) {
+		// select id,name from city order by (lat-38.047)*(lat-38.047)+(lng-114.503)*(lng-114.503) limit 0,10
+		return (List<City>) getJdbcTemplate().query("select * from city order by (lat-?)*(lat-?)+(lng-?)*(lng-?) limit 0," + nearCitysLimitCount, new Object[] {lat, lat, lng, lng}, new RowMapper() {
+		
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				City city = new City();
+				city.setId(rs.getString("id"));
+				city.setName(rs.getString("name"));
+				city.setLat(rs.getFloat("lat"));
+				city.setLng(rs.getFloat("lng"));
+				city.setHitCount(rs.getInt("hit_count"));
+				city.setTag(rs.getString("tag"));
+				return city;
+			}
+		
+		});
 	}
 
 	/**

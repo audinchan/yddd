@@ -3,17 +3,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2007-9-11 22:35:26 by Hibernate Tools 3.2.0.b9 -->
 <hibernate-mapping>
-    <class name="com.yodoo.rent.model.City" table="city" catalog="rent">
+    <class name="com.yodoo.rent.model.Province" table="province" catalog="rent">
         <comment></comment>
         <id name="id" type="string">
             <column name="id" length="32" />
             <generator class="uuid.hex" />
         </id>
-        <many-to-one name="province" class="com.yodoo.rent.model.Province" fetch="select">
-            <column name="province_id" length="32" not-null="true">
-                <comment></comment>
-            </column>
-        </many-to-one>
         <property name="name" type="string">
             <column name="name" length="30" not-null="true">
                 <comment></comment>
@@ -39,13 +34,13 @@
                 <comment></comment>
             </column>
         </property>
-        <set name="areas" inverse="true">
+        <set name="citys" inverse="true">
             <key>
-                <column name="city_id" length="32" not-null="true">
+                <column name="province_id" length="32" not-null="true">
                     <comment></comment>
                 </column>
             </key>
-            <one-to-many class="com.yodoo.rent.model.Area" />
+            <one-to-many class="com.yodoo.rent.model.City" />
         </set>
     </class>
 </hibernate-mapping>
