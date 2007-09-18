@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>找房子</title>
+<link rel="stylesheet" href="../css/main.css" />
+<style type="text/css">
+v\:* {behavior: url(#default#VML);}
+html,body{overflow:hidden;}
+#map {margin-left:0;left:0;margin-right:0;border-width: 0px 1px 1px 1px;}
+</style>
+<script src='../js/func.js'></script>
+<script
+	src="http://ditu.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAHGYqsQNmu-Zmlz7HIyBjBxTkC2hDZ_uphd3RfMN_0RVjLMwHphSBNw9kDe7ld4vZEiwsMbVQ9VzG2A"
+	type="text/javascript"></script>
+<script type="text/javascript">
+
+//<![CDATA[
+
+// 自定义的地图类
+function MyMap(lng, lat, zoom) {
+	this.map = new GMap2(document.getElementById("map"));
+	this.map.addControl(new GLargeMapControl ());
+	this.map.addControl(new GScaleControl());
+	this.map.addControl(new GOverviewMapControl());
+	this.map.setCenter(new GLatLng(lat, lng), zoom);
+}
+
+var mymap;
+var newMarker;
+
+function load() {
+	mymap = new MyMap(116.397, 39.917, 11);
+	
+	newMarker = new GMarker(mymap.map.getCenter(), {
+		draggable: true
+	});
+	
+	GEvent.addListener(newMarker, "dragend", function() {
+		showPos();
+	});
+	
+	GEvent.addListener(mymap.map, "zoomend", function() {
+		resetMarkerPos(mymap.map, newMarker);
+	});
+	
+	GEvent.addListener(mymap.map, "moveend", function() {
+		resetMarkerPos(mymap.map, newMarker);
+	});
+	
+	mymap.map.addOverlay(newMarker);
+	showPos();
+}
+
+function showPos() {
+	var p = newMarker.getPoint();
+	$('lat').value = p.lat();
+	$('lng').value = p.lng();
+}
+
+function resetMarkerPos(map, marker) {
+	if (!map.getBounds().contains(marker.getPoint())) {
+		marker.setPoint(map.getCenter());
+		showPos();
+	}
+}
+
+function c(lat, lng) {
+	mymap.map.setCenter(new GLatLng(lat, lng), 14);
+}
+
+//]]>
+</script>
+</head>
+<body onload="load()" onunload="GUnload()">
+切换城市： 
+<a href="javascript: c(39.917,116.397)">北京</a> 
+<a href="javascript: c(31.248,121.473)">上海</a> 
+<a href="javascript: c(30.25,120.167)">杭州</a> 
+<a href="javascript: c(22.5435,114.1096)">深圳</a> 
+<a href="javascript: c(23.12,113.25)">广州</a> 
+<a href="javascript: c(24.460,118.079)">厦门</a>
+<a href="javascript: c(30.67,104.07)">成都</a>
+<div>
+	纬度: <input type='text' id="lat"/><br/>
+	经度: <input type='text' id="lng"/><br/>
+</div>
+<div id="map" style="width: 600px; height: 500px">
+</div>
+
+</body>
+</html>
