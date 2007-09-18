@@ -1,22 +1,23 @@
 package com.yodoo.rent.extservice.impl;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.yodoo.rent.extservice.IAddressLookupManager;
 import com.yodoo.rent.extservice.LTPoint;
-import com.yodoo.rent.model.City;
-import com.yodoo.rent.service.ICityManager;
 
 public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 		IAddressLookupManager {
 	
-	private ICityManager cityManager;
-
-	public void setCityManager(ICityManager cityManager) {
-		this.cityManager = cityManager;
-	}
+//	private ICityManager cityManager;
+//
+//	public void setCityManager(ICityManager cityManager) {
+//		this.cityManager = cityManager;
+//	}
 
 	public String getAddress(String ipAddress) {
 		long ip = ipToLong(ipAddress);
@@ -26,25 +27,74 @@ public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 						new Object[] { ip, ip }, String.class);
 	}
 
-	public LTPoint getLatLng(String address) {
+	public LTPoint getLatLng(final String address) {
 		/*
 		 * 1、按省市县区分词，确定数组0123分别代表省市县区。
 		 * 2、根据省市县区查找符合的结果集，按3210匹配，如果找到，则返回。
-		 * 3、根据如果包含大学、学院，则取出，根据学校直接定位坐标（学校坐标库），返回。
-		 * 4、如果学校坐标库中没有此学校，则根据学校查找所在区、县、市、省，返回。
-		 * 5、如果以上都未成功，则根据前三个字和前两个字查找匹配省市，如果找到，则
-		 * 5.1、根据省市后面的三个字和两个字查找匹配城市，如果找到则返回。
+		 * 3、根据如果包含大学、学院，则取出，根据学校直接定位坐标（学校坐标库），返回。 <not done>
+		 * 4、如果学校坐标库中没有此学校，则根据学校查找所在区、县、市、省，返回。 <not done>
+		 * 5、如果以上都未成功，则根据前三个字和前两个字查找匹配省市，如果找到，则  <只按前两个字处理了>
+		 * 5.1、根据省市后面的三个字和两个字查找匹配城市，如果找到则返回。 <not done>
 		 * 5.2、如果未找到，则返回省市。
 		 */
-		
-		// TODO 增加Cache处理，以提高效率。
-		List<City> list = cityManager.findAll();
-		for (City city : list) {
-			if (address.indexOf(city.getName()) != -1) {
-				return new LTPoint(city.getName(), address, city.getLat(), city.getLng());
+		final String[] parts = address.split("省|市|县|区|\\s");
+		StringBuffer sql = new StringBuffer();
+		sql.append("select name, lat, lng from city");
+		if (parts.length > 0) {
+			sql.append(" where");
+			for (int i = 0; i < parts.length; i++) {
+				sql.append(" name like '" + parts[i] + "%'");
+				if (i != parts.length - 1) {
+					sql.append(" or");
+				}
 			}
 		}
-		return null;
+		
+		LTPoint point = (LTPoint) getJdbcTemplate().query(sql.toString(), new ResultSetExtractor() {
+		
+			public Object extractData(ResultSet rs) throws SQLException,
+					DataAccessException {
+				 while (rs.next()) {
+					String city = rs.getString("name");
+					for (int j = parts.length - 1; j >= 0; j--) {
+						if (city.equals(parts[j])) {
+							LTPoint point = new LTPoint();
+							point.setAddress(address);
+							point.setCity(city);
+							point.setLat(rs.getFloat("lat"));
+							point.setLng(rs.getFloat("lng"));
+							return point;
+						}
+					}
+				}
+				
+				return null;
+			}
+		
+		});
+		
+		if (point != null) {
+			return point;
+		}
+		
+		point = (LTPoint) getJdbcTemplate().query("select name, lat, lng from city where name like ?", new Object[] {address.substring(0, 2) + "%"}, new ResultSetExtractor() {
+			
+			public Object extractData(ResultSet rs) throws SQLException,
+					DataAccessException {
+				while (rs.next()) {
+					return new LTPoint(rs.getString("name"), address, rs.getFloat("lat"), rs.getFloat("lng"));
+				}
+				return null;
+			}
+		
+		});
+		
+		return point;
+	}
+
+	public String getRandomAddress() {
+		// mysql 语法
+		return (String) getJdbcTemplate().queryForObject("select country from iptable order by rand() limit 0, 1", String.class);
 	}
 
 	/**

@@ -17,6 +17,7 @@ import org.nestframework.commons.utils.StringUtil;
 
 import com.yodoo.rent.commons.PermissionDeniedException;
 import com.yodoo.rent.extservice.IAddressLookupManager;
+import com.yodoo.rent.extservice.LTPoint;
 import com.yodoo.rent.model.HouseInfo;
 import com.yodoo.rent.model.User;
 import com.yodoo.rent.service.IAreaManager;
@@ -347,5 +348,14 @@ public class RentUtil {
 	public String getLocation(HttpServletRequest req) {
 		String ipAddress = req.getRemoteAddr();
 		return addressLookupManager.getAddress(ipAddress);
+	}
+	
+	/**
+	 * 获取随机地址. 用于测试.
+	 * @return
+	 */
+	public LTPoint getRandomPoint() {
+		String address = addressLookupManager.getRandomAddress();
+		return addressLookupManager.getLatLng(address);
 	}
 }
