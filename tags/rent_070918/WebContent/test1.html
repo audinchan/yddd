@@ -1,0 +1,30 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=GB2312"/>
+<meta name="keywords" content="LTEZMarker,JavaScript,灵图,51ditu EZMarker API,地图,范例文档,vml"/>
+<title>使用直接显示在页面上的ezmarker-灵图51ditu Maps API范例</title>
+<style type="text/css">v\:*{behavior:url(#default#VML);}</style>
+<script language="javascript" src="http://api.51ditu.com/js/maps.js"></script>
+<script language="javascript" src="http://api.51ditu.com/js/ezmarker.js"></script>
+
+</head>
+<body>
+	<div id="mapDiv" style="position:absolute;width:600px; height:500px;">
+
+	</div>
+	<script language="javascript">
+		var ezmarker=new LTEZMarker("ezmarker",1,document.getElementById("mapDiv"));	//创建一个ezmarker
+		ezmarker.showButton(false);
+	</script>
+	<div style="position:absolute;left:620px;top:10px;">
+		<ul>
+		<li>查看<b>本页面源文件</b>可以了解如何使用51ditu ezmarker API实现本功能；</li><br/><br/>
+
+		<li>默认情况下ezmarker显示在页面上是一个按钮，点击该按钮，会弹出用来标点的浮动窗口，如果您希望ezmarker直接显示在页面上，请参考本范例的代码；</li>
+
+		<br/><br/><li><a href="../../examples.html">返回所有范例列表</a></li>
+		</ul>
+	</div>
+	<div style="position:absolute;top:500px;">&copy;2006 <a href="http://www.51ditu.com" target="_blank">51ditu.com</a></div>
+<script language="javascript" src="http://api.51ditu.com/js/pv.js"></script></body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-9-11 22:35:26 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.Province" table="province" catalog="rent">
+        <comment></comment>
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="uuid.hex" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="30" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="lat" type="float">
+            <column name="lat" precision="12" scale="0" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="lng" type="float">
+            <column name="lng" precision="12" scale="0" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="hitCount" type="integer">
+            <column name="hit_count">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="tag" type="string">
+            <column name="tag" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <set name="citys" inverse="true">
+            <key>
+                <column name="province_id" length="32" not-null="true">
+                    <comment></comment>
+                </column>
+            </key>
+            <one-to-many class="com.yodoo.rent.model.City" />
+        </set>
+    </class>
+</hibernate-mapping>

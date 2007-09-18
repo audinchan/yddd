@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-8-8 15:49:43 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.Media" table="media" catalog="rent">
+        <comment></comment>
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="uuid.hex"></generator>
+        </id>
+        <property name="localPath" type="string">
+            <column name="local_path" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="45" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="comment" type="string">
+            <column name="comment" length="45">
+                <comment></comment>
+            </column>
+        </property>
+        <set name="houseInfos" inverse="true" table="house_media">
+            <key>
+                <column name="media_id" length="32" not-null="true">
+                    <comment></comment>
+                </column>
+            </key>
+            <many-to-many entity-name="com.yodoo.rent.model.HouseInfo">
+                <column name="house_id" length="32" not-null="true">
+                    <comment></comment>
+                </column>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

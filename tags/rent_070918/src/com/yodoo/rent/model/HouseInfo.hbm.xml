@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-8-11 20:40:23 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.HouseInfo" table="house_info" catalog="rent" where="deleted != 1">
+        <comment></comment>
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="uuid.hex"></generator>
+        </id>
+        <version name="version" type="integer">
+            <column name="version" not-null="true">
+                <comment></comment>
+            </column>
+        </version>
+        <many-to-one name="user" class="com.yodoo.rent.model.User" fetch="select">
+            <column name="username" length="64" not-null="true">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        <property name="publishTime" type="timestamp">
+            <column name="publish_time" length="19" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="longitude" type="java.lang.Float">
+            <column name="longitude" precision="12" scale="0">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="latitude" type="java.lang.Float">
+            <column name="latitude" precision="12" scale="0">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="province" type="integer">
+            <column name="province">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="city" type="integer">
+            <column name="city">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="area" type="integer">
+            <column name="area">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="rooms" type="integer">
+            <column name="rooms">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="price" type="integer">
+            <column name="price">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="endTime" type="timestamp">
+            <column name="end_time" length="19">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="rentType" type="integer">
+            <column name="rent_type" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="provider" type="string">
+            <column name="provider" length="64" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" length="64">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="64">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="addressDetail" type="string">
+            <column name="address_detail" length="80">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="description" type="string">
+            <column name="description">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="updateTime" type="timestamp">
+            <column name="update_time" length="19">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="viewCount" type="integer">
+            <column name="view_count">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="sourceUrl" type="string">
+            <column name="source_url">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="sourceProvider" type="string">
+            <column name="source_provider" length="60">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="providerType" type="integer">
+            <column name="provider_type">
+                <comment></comment>
+            </column>
+        </property>
+        <set name="medias" inverse="true" table="house_media">
+            <key>
+                <column name="house_id" length="32" not-null="true">
+                    <comment></comment>
+                </column>
+            </key>
+            <many-to-many entity-name="com.yodoo.rent.model.Media">
+                <column name="media_id" length="32" not-null="true">
+                    <comment></comment>
+                </column>
+            </many-to-many>
+        </set>
+        
+        <!-- 定义逻辑删除 -->
+        <sql-delete>
+        	update house_info set deleted=1 where id=? and version=?
+        </sql-delete>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+	<type-mapping>
+		<sql-type jdbc-type="INTEGER" hibernate-type="integer" />
+		<sql-type jdbc-type="SMALLINT" hibernate-type="java.lang.Short" />
+		<sql-type jdbc-type="INTEGER" precision='1'
+			hibernate-type="boolean" />
+		<sql-type jdbc-type="NUMERIC" precision='1'
+			hibernate-type="boolean" />
+		<sql-type jdbc-type="SMALLINT" precision='1'
+			hibernate-type="boolean" />
+		<sql-type jdbc-type="TINYINT" precision='1'
+			hibernate-type="boolean" />
+	</type-mapping>
+
+	<!-- BIN$ is recycle bin tables in Oracle -->
+	<table-filter match-name="BIN$.*" exclude="true" />
+	<!-- Exclude DoNotWantIt from all catalogs/schemas -->
+	<table-filter match-name="DoNotWantIt" exclude="true" />
+	<!-- exclude all tables from the schema SCHEMA in catalog BAD. -->
+	<table-filter match-catalog="BAD" match-schema="SCHEMA"
+		match-name=".*" exclude="true" />
+
+	
+	<table name="user_profile" catalog="rent">
+		<primary-key>
+			<generator class="uuid.hex"></generator>
+		</primary-key>
+	</table>
+	
+	<table name="house_info" catalog="rent">
+		<primary-key>
+			<generator class="uuid.hex"></generator>
+		</primary-key>
+	</table>
+	
+	<table name="media" catalog="rent">
+		<primary-key>
+			<generator class="uuid.hex"></generator>
+		</primary-key>
+	</table>
+</hibernate-reverse-engineering>

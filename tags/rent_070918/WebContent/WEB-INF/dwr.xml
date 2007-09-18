@@ -1,0 +1,19 @@
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr//dwr20.dtd">
+
+<dwr>
+	<allow>
+		<create creator="spring" javascript="rentUtil">
+			<param name="beanName" value="rentUtil"/>
+		</create>
+		
+		<create creator="spring" javascript="userUtil">
+			<param name="beanName" value="userUtil"/>
+		</create>
+
+		<convert converter="hibernate3" match="com.yodoo.rent.model.*" />
+		<convert converter="bean" match="org.nestframework.commons.hibernate.*" />
+		<convert converter="bean" match="com.yodoo.rent.extservice.*" />
+		
+		<convert match="java.lang.Exception" converter="exception"/>
+	</allow>
+</dwr>
