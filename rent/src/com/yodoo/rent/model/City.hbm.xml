@@ -39,7 +39,7 @@
                 <comment></comment>
             </column>
         </property>
-        <set name="areas" inverse="true">
+        <set name="areas" inverse="true" order-by="name">
             <key>
                 <column name="city_id" length="32" not-null="true">
                     <comment></comment>
