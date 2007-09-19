@@ -21,6 +21,7 @@
 
 <form name="importForm" action="AreaMgr.a" enctype="multipart/form-data" method="post" onsubmit="return validate_importForm(this)">
 <nest:from/>
+<input type="hidden" name="provinceId" value="${provinceId }">
 
 <table border="1">
 	<tr>
