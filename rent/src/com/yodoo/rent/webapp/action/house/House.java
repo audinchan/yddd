@@ -59,6 +59,11 @@ public class House extends BaseAction {
 		return "/house/delete_resule.jsp";
 	}
 	
+	public Object show() {
+		info = houseInfoManager.get(info.getId());
+		return getPage("/house", "show.jsp");
+	}
+	
 	@Spring
 	private IHouseInfoManager houseInfoManager;
 	
