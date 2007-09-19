@@ -103,7 +103,7 @@ public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 	@SuppressWarnings("unchecked")
 	public List<City> findNearCitys(int count, float lat, float lng) {
 		// select id,name from city order by (lat-38.047)*(lat-38.047)+(lng-114.503)*(lng-114.503) limit 0,10
-		return (List<City>) getJdbcTemplate().query("select * from city where tag<>'notcity' order by (lat-?)*(lat-?)+(lng-?)*(lng-?) limit 0," + count, new Object[] {lat, lat, lng, lng}, new RowMapper() {
+		return (List<City>) getJdbcTemplate().query("select * from city order by (lat-?)*(lat-?)+(lng-?)*(lng-?) limit 0," + count, new Object[] {lat, lat, lng, lng}, new RowMapper() {
 		
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 				City city = new City();
