@@ -34,7 +34,7 @@
                 <comment></comment>
             </column>
         </property>
-        <set name="citys" inverse="true">
+        <set name="citys" inverse="true" order-by="name">
             <key>
                 <column name="province_id" length="32" not-null="true">
                     <comment></comment>
