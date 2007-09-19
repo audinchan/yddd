@@ -34,9 +34,11 @@ public interface IAddressLookupManager {
 	
 	/**
 	 * 查找最近的城市.
+	 * 
+	 * @param count
 	 * @param lat
 	 * @param lng
 	 * @return
 	 */
-	public List<City> findNearCitys(float lat, float lng);
+	public List<City> findNearCitys(int count, float lat, float lng);
 }

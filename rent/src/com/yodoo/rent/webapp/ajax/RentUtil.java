@@ -3,21 +3,22 @@
  */
 package com.yodoo.rent.webapp.ajax;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nestframework.commons.hibernate.IPage;
 import org.nestframework.commons.utils.StringUtil;
 
 import com.yodoo.rent.commons.PermissionDeniedException;
 import com.yodoo.rent.extservice.IAddressLookupManager;
 import com.yodoo.rent.extservice.LTPoint;
+import com.yodoo.rent.model.City;
 import com.yodoo.rent.model.HouseInfo;
 import com.yodoo.rent.model.User;
 import com.yodoo.rent.service.IAreaManager;
@@ -357,5 +358,15 @@ public class RentUtil {
 	public LTPoint getRandomPoint() {
 		String address = addressLookupManager.getRandomAddress();
 		return addressLookupManager.getLatLng(address);
+	}
+	
+	/**
+	 * 查找附近的城市.
+	 * @param lat
+	 * @param lng
+	 * @return
+	 */
+	public List<City> findNearCities(int count, float lat, float lng) {
+		return addressLookupManager.findNearCitys(count, lat, lng);
 	}
 }

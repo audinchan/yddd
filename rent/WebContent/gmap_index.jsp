@@ -256,6 +256,7 @@ function MyMap(lng, lat, zoom) {
 
 	GEvent.addListener(this.map, "moveend", function() {
 		fetchMarkers();
+		findNearCities();
 	});
 }
 
@@ -336,6 +337,27 @@ function toArea(areaId, aLat, aLng) {
 	mymap.map.setCenter(new GLatLng(aLat, aLng), 14);
 	
 	rentUtil.addAreaHit(areaId);
+}
+
+function findNearCities() {
+	var p = mymap.map.getCenter();
+	rentUtil.findNearCities(10, p.lat(), p.lng(), function (cities) {
+		if (cities) {
+			dwr.util.removeAllRows("citiesList", { filter:function(tr) {
+		      return (tr.id != "cityPattern");
+		    }});
+			for (var i in cities) {
+				var city = cities[i];
+				var id = city.id;
+				
+				dwr.util.cloneNode("cityPattern", { idSuffix:id });
+				
+				dwr.util.setValue("cityName" + id, city.name);
+				
+				$("cityPattern" + id).style.display = "";
+			}
+		}
+	});
 }
 
 //]]>
@@ -465,6 +487,20 @@ function toArea(areaId, aLat, aLng) {
 							<div id="map" style="width: 600px; height: 500px">
 							</div><!-- map -->
 						</div><!-- mapContent -->
+					</td>
+					
+					<td valign="top" width="150">
+						<div id="info">
+							<table>
+								<tbody id="citiesList">
+									<tr id="cityPattern" style="display:none;">
+										<td valign="top" nowrap>
+											<span id="cityName"></span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</td>
 				</tr>
 			</table>
