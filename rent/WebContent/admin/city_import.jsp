@@ -37,6 +37,10 @@
 					<option value="${province.id }">${province.name }</option>
 				</c:forEach>
 			</select>
+			<br>
+			<strong>说明：</strong><br>
+			如果不选省份，则导入文件的格式为“省份名称,城市名称,经度,纬度”；<br>
+			如果选择了某个省份，则导入文件的格式为“城市名称,经度,纬度”。
 		</td>
 	</tr>
 	<tr>
@@ -47,9 +51,9 @@
 	</tr>
 </table>
 
-管理区域:<p>
+点击进入各个城市的热点区域管理:<br>
 <c:forEach items="${provinceList }" var="province">
-	<a href="AreaMgr.a?provinceId=${province.id }" target=_blank>${province.name }</a><br>
+	<a href="AreaMgr.a?provinceId=${province.id }" target=_blank>${province.name }</a> 
 </c:forEach>
 
 </form>
