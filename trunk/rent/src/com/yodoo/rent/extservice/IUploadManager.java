@@ -8,18 +8,18 @@ import org.nestframework.action.FileItem;
 import com.yodoo.rent.model.User;
 
 /**
- * ÉÏÔØ¹ÜÀí.
+ * ä¸Šè½½ç®¡ç†.
  * 
  * @author audin
  *
  */
 public interface IUploadManager {
 	/**
-	 * ±£´æ·¿ÎİĞÅÏ¢µÄÏà¹ØÍ¼Æ¬.
+	 * ä¿å­˜æˆ¿å±‹ä¿¡æ¯çš„ç›¸å…³å›¾ç‰‡.
 	 * 
-	 * @param uploader ÉÏÔØÕß.
-	 * @param houseId ·¿ÎİĞÅÏ¢±êÊ¶ºÅ.
-	 * @param files ÉÏ´«µÄÎÄ¼ş.
+	 * @param uploader ä¸Šè½½è€….
+	 * @param houseId æˆ¿å±‹ä¿¡æ¯æ ‡è¯†å·.
+	 * @param files ä¸Šä¼ çš„æ–‡ä»¶.
 	 */
 	public void upload(User uploader, String houseId, FileItem[] files);
 }
