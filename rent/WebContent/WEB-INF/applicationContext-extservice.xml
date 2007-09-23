@@ -13,4 +13,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
 	
 	<bean id="rentUtil" class="com.yodoo.rent.webapp.ajax.RentUtil"></bean>
 	<bean id="userUtil" class="com.yodoo.rent.webapp.ajax.UserUtil"></bean>
+	
+	<!-- listensers -->
+	<bean id="onlineUserSessionListener" class="com.yodoo.rent.webapp.utils.OnlineUserSessionListener"></bean>
+	<bean id="defaultSessionListenser" class="com.yodoo.rent.webapp.utils.DefaultSessionListenser">
+		<property name="listeners">
+			<list>
+				<ref bean="onlineUserSessionListener"/>
+			</list>
+		</property>
+	</bean>
 </beans>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2007-9-22 10:24:04 by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.yodoo.rent.model.Talk" table="talk" catalog="rent">
+        <comment></comment>
+        <id name="id" type="integer">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        <property name="sender" type="string">
+            <column name="sender" length="45" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="receiver" type="string">
+            <column name="receiver" length="45" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="msg" type="string">
+            <column name="msg" length="45" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="sendTime" type="timestamp">
+            <column name="send_time" length="19" not-null="true">
+                <comment></comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

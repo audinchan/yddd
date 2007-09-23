@@ -23,4 +23,10 @@ public interface Constant {
 	 * 用户当前所在城市.
 	 */
 	public static final String CURRENT_CITY = "__current_city__";
+	
+	/**
+	 * 在线用户标识.
+	 * 包括所有匿名用户，访问网站后在online_user表中添加一条记录。
+	 */
+	public static final String ONLINE_USER = "__online_user__";
 }

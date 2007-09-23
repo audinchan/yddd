@@ -44,6 +44,9 @@
 				<value>com/yodoo/rent/model/Province.hbm.xml</value>
 				<value>com/yodoo/rent/model/City.hbm.xml</value>
 				<value>com/yodoo/rent/model/Area.hbm.xml</value>
+				<value>com/yodoo/rent/model/OnlineUser.hbm.xml</value>
+				<value>com/yodoo/rent/model/Talk.hbm.xml</value>
+				<value>com/yodoo/rent/model/VisitLog.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -104,6 +107,19 @@
     
     <bean id="areaManager" 
     	class="com.yodoo.rent.service.impl.AreaManager" autowire="byName">
+    </bean>
+
+    <bean id="onlineUserManager"
+    	class="com.yodoo.rent.service.impl.OnlineUserManager"
+    	autowire="byName">
+    </bean>
+
+    <bean id="talkManager"
+    	class="com.yodoo.rent.service.impl.TalkManager"
+    	autowire="byName">
+    </bean>
+    
+    <bean id="visitLogManager" class="com.yodoo.rent.service.impl.VisitLogManager" autowire="byName">
     </bean>
 
 </beans>
