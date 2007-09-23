@@ -291,8 +291,8 @@ function openInfoOfHouse(houseId) {
 	var house = houseCache[houseId];
 	if (marker != undefined && house != undefined) {
 		marker.openInfoWindowHtml(
-			"<strong>" + house.addressDetail + 
-			"</strong><br/>" + roomDesc[house.rooms] + "￥<strong>" +
+			"<a href='house/House.a?show&info.id="+house.id+"' target=_blank><strong>" + house.addressDetail + 
+			"</strong></a><br/>" + roomDesc[house.rooms] + "￥<strong>" +
 			house.price + "</strong>/月" + 
 			"<br/>"+house.provider+" "+house.phone+"<br/>" + 
 			house.publishTime.friendlyFormat(timeDiff)
@@ -472,7 +472,9 @@ function findNearCities() {
 											<a href="#" id="idIcon" onclick="openInfoOfHouse(this.id.substring(6)); return false;"><img border="0"/></a>
 										</td>
 										<td valign="top">
-											<strong><a href="javascript:;" id="idAddress" onclick="openInfoOfHouse(this.id.substring(9)); return false;">address</a></strong><br/>
+											<strong><a href="javascript:;" id="idAddress" onclick="openInfoOfHouse(this.id.substring(9)); return false;">address</a></strong>
+											<a href='#' id="detailLink" onclick="window.open('house/House.a?show&info.id='+this.id.substring(10)); return false;">[详细]</a>
+											<br/>
 											<span id="idRooms">3</span>￥<strong><span id="idPrice">2000</span></strong>/月<br/>
 											<span style="color: graytext;"><span id="idProvider">someone</span> <span id="idPhone">mobile</span> <span id="idDate">publish date</span></span>
 										</td>

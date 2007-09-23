@@ -19,5 +19,8 @@
         <mapping resource="com/yodoo/rent/model/LocationCache.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/UserProfile.hbm.xml" />
         <mapping resource="com/yodoo/rent/model/Area.hbm.xml" />
+        <mapping resource="com/yodoo/rent/model/OnlineUser.hbm.xml" />
+        <mapping resource="com/yodoo/rent/model/Talk.hbm.xml" />
+        <mapping resource="com/yodoo/rent/model/VisitLog.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

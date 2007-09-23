@@ -6,6 +6,7 @@ package com.yodoo.rent.webapp.action;
 import javax.servlet.http.HttpSession;
 
 import com.yodoo.rent.commons.Constant;
+import com.yodoo.rent.model.OnlineUser;
 import com.yodoo.rent.model.User;
 
 /**
@@ -57,6 +58,16 @@ public abstract class BaseAction implements Constant {
 	 */
 	public static User getLoginUser(HttpSession s) {
 		return (User) s.getAttribute(USER_KEY);
+	}
+	
+	/**
+	 * 从Session中获取在线用户对象.
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static OnlineUser getOnlineUser(HttpSession s) {
+		return (OnlineUser) s.getAttribute(ONLINE_USER);
 	}
 	
 	protected String getPage(String page) {

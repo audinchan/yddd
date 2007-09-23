@@ -3,6 +3,8 @@
  */
 package com.yodoo.rent.webapp.action.house;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.nestframework.addons.spring.Spring;
@@ -10,7 +12,9 @@ import org.nestframework.annotation.DefaultAction;
 import org.nestframework.commons.hibernate.IPage;
 
 import com.yodoo.rent.model.HouseInfo;
+import com.yodoo.rent.model.OnlineUser;
 import com.yodoo.rent.service.IHouseInfoManager;
+import com.yodoo.rent.service.IVisitLogManager;
 import com.yodoo.rent.webapp.action.BaseAction;
 
 /**
@@ -18,6 +22,7 @@ import com.yodoo.rent.webapp.action.BaseAction;
  *
  */
 public class House extends BaseAction {
+
 	@DefaultAction
 	public Object add() {
 		return "/house/add.jsp";
@@ -59,19 +64,34 @@ public class House extends BaseAction {
 		return "/house/delete_resule.jsp";
 	}
 	
-	public Object show() {
+	public Object show(HttpSession s) {
 		info = houseInfoManager.get(info.getId());
+		
+		// 记录每次对出租信息的访问.
+		visitLogManager.addLog(info.getId(), getOnlineUser(s).getId());
+		
+		visitUsers = visitLogManager.getOnlineUserOfHouse(info.getId());
+		
+		relatedHouses = visitLogManager.getRelatedHouses(info.getId());
+		
 		return getPage("/house", "show.jsp");
 	}
 	
 	@Spring
 	private IHouseInfoManager houseInfoManager;
 	
+	@Spring
+	private IVisitLogManager visitLogManager;
+	
 	private HouseInfo info = new HouseInfo();
 	
 	private String keyword;
 	
 	private IPage<HouseInfo> pageObj;
+	
+	private List<OnlineUser> visitUsers;
+	
+	private List<HouseInfo> relatedHouses;
 
 
 	public HouseInfo getInfo() {
@@ -92,5 +112,13 @@ public class House extends BaseAction {
 
 	public IPage<HouseInfo> getPageObj() {
 		return pageObj;
+	}
+
+	public List<OnlineUser> getVisitUsers() {
+		return visitUsers;
+	}
+
+	public List<HouseInfo> getRelatedHouses() {
+		return relatedHouses;
 	}
 }
