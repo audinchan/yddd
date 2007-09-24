@@ -279,6 +279,10 @@ MyMap.prototype.clearMarkers = function() {
 	this.map.clearOverlays();
 }
 
+MyMap.prototype.moveTo = function(aLat, aLng) {
+	this.map.setCenter(new GLatLng(aLat, aLng), 14);
+}
+
 function openInfo(eleid) {
 	// we were an id of the form "idIcon{id}", eg "idIcon42". We lookup the "42"
 	lastClickId = eleid.substring(6);
@@ -352,7 +356,9 @@ function findNearCities() {
 				
 				dwr.util.cloneNode("cityPattern", { idSuffix:id });
 				
-				dwr.util.setValue("cityName" + id, city.name);
+				$('cityCell' + id).innerHTML = "<a href='javascript: mymap.moveTo("+city.lat+","+city.lng+")'>"+city.name+"</a>";
+				
+				//dwr.util.setValue("cityName" + id, city.name);
 				
 				$("cityPattern" + id).style.display = "";
 			}
@@ -496,8 +502,8 @@ function findNearCities() {
 							<table>
 								<tbody id="citiesList">
 									<tr id="cityPattern" style="display:none;">
-										<td valign="top" nowrap>
-											<span id="cityName"></span>
+										<td valign="top" id="cityCell" nowrap>
+											<a href='javascript: ;' alat=0, alng=0 id="link"><span id="cityName"></span></a>
 										</td>
 									</tr>
 								</tbody>
