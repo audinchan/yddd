@@ -103,7 +103,7 @@ public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 	@SuppressWarnings("unchecked")
 	public List<City> findNearCitys(int count, float lat, float lng) {
 		// select id,name from city order by (lat-38.047)*(lat-38.047)+(lng-114.503)*(lng-114.503) limit 0,10
-		return (List<City>) getJdbcTemplate().query("select * from city order by (lat-?)*(lat-?)+(lng-?)*(lng-?) limit 0," + count, new Object[] {lat, lat, lng, lng}, new RowMapper() {
+		return (List<City>) getJdbcTemplate().query("select * from city where tag is null or tag<>'area' order by (lat-?)*(lat-?)+(lng-?)*(lng-?) limit 0," + count, new Object[] {lat, lat, lng, lng}, new RowMapper() {
 		
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 				City city = new City();
@@ -126,14 +126,16 @@ public class AddressLookupManagerImpl extends JdbcDaoSupport implements
 	 * @return
 	 */
 	public static long ipToLong(String strIP) {
-		long[] ip = new long[4];
-		int position1 = strIP.indexOf(".");
-		int position2 = strIP.indexOf(".", position1 + 1);
-		int position3 = strIP.indexOf(".", position2 + 1);
-		ip[0] = Long.parseLong(strIP.substring(0, position1));
-		ip[1] = Long.parseLong(strIP.substring(position1 + 1, position2));
-		ip[2] = Long.parseLong(strIP.substring(position2 + 1, position3));
-		ip[3] = Long.parseLong(strIP.substring(position3 + 1));
-		return (ip[0] << 24) + (ip[1] << 16) + (ip[2] << 8) + ip[3];
+		String[] parts = strIP.split("\\.");
+		return (Long.parseLong(parts[0]) << 24) + (Long.parseLong(parts[1]) << 16) + (Long.parseLong(parts[2]) << 8) + Long.parseLong(parts[3]);
+//		long[] ip = new long[4];
+//		int position1 = strIP.indexOf(".");
+//		int position2 = strIP.indexOf(".", position1 + 1);
+//		int position3 = strIP.indexOf(".", position2 + 1);
+//		ip[0] = Long.parseLong(strIP.substring(0, position1));
+//		ip[1] = Long.parseLong(strIP.substring(position1 + 1, position2));
+//		ip[2] = Long.parseLong(strIP.substring(position2 + 1, position3));
+//		ip[3] = Long.parseLong(strIP.substring(position3 + 1));
+//		return (ip[0] << 24) + (ip[1] << 16) + (ip[2] << 8) + ip[3];
 	}
 }
